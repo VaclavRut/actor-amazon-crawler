@@ -19,7 +19,6 @@ class PaginationUrlParser {
             }
         }catch(error){
             //try to wait for second known layout
-            console.log(error)
             try{
                 await page.waitForSelector('.a-pagination .a-last',{timeout: 2000});
                 let pageAttr = await page.evaluate(() => {
@@ -35,7 +34,6 @@ class PaginationUrlParser {
                     return false;
                 }
             }catch(error){
-                console.log(error)
                 console.log("no pagination or unknown layout of page")
                 return false;
             }

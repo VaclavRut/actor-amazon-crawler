@@ -134,7 +134,7 @@ Apify.main(async () => {
                     });
                     //if there is a pagination, go to another page
                     if (paginationUrl !== false) {
-                        console.log(`paginationUrl -> ${paginationUrl}`)
+                        console.log(`Seller detail has pagination, crawling that now -> ${paginationUrl}`)
                         await requestQueue.addRequest(new Apify.Request({
                             url: paginationUrl,
                             userData: {
