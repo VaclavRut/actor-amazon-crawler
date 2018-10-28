@@ -72,7 +72,14 @@ Configuration then extracts all seller offers for a given keyword, so if there i
 ```
 {
   "country":"DE",
-  "keywords": ["samsung monitor 27","iphone x"]
+  "keywords": [
+      {
+        "item": "samsung monitor 27"
+      },
+      {
+          "item": "Iphone XR"
+        }
+    ]
 }
 
 ```

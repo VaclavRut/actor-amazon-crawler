@@ -14,8 +14,8 @@ class searchUrlsCreator {
 
         for (let keyword of input.keywords) {
             searchUrls.push({
-                keyword: keyword,
-                url: searchUrlBase + keyword.replace(/\s/g, "+").trim()
+                keyword: keyword.item,
+                url: searchUrlBase + keyword.item.replace(/\s/g, "+").trim()
             })
         }
         return searchUrls;
