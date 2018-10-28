@@ -33,8 +33,8 @@
       "title": "Keywords",
       "type": "array",
       "description": "Keywords you would like to extract from Amazon",
-      "prefill": [{ "keyword": "Iphone X" }],
-      "editor": "requestListSources"
+      "prefill": ["Iphone X"],
+      "editor": "json"
     }
   },
   "required": [
