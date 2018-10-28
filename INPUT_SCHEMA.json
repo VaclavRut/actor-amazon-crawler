@@ -4,7 +4,7 @@
   "schemaVersion": 1,
   "properties": {
     "country": {
-      "title": "Country",
+      "title": "Amazon market",
       "type": "string",
       "description": "Select your country on Amazon.com",
       "editor": "select",
@@ -33,7 +33,7 @@
       "title": "Keywords",
       "type": "array",
       "description": "Keywords you would like to extract from Amazon",
-      "prefill": ["Iphone X"],
+      "prefill": ["Iphone X", "Samsung monitor 27 QHD"],
       "editor": "json"
     }
   },
