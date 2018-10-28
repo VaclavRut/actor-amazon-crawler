@@ -1,0 +1,44 @@
+{
+  "title": "Amazon crawler",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "country": {
+      "title": "Country",
+      "type": "string",
+      "description": "Select your country on Amazon.com",
+      "editor": "select",
+      "default": "US",
+      "enum": [
+        "US",
+        "UK",
+        "DE",
+        "ES",
+        "FR",
+        "IT",
+        "IN",
+        "CA"
+      ],
+      "enumTitles": ["amazon.com",
+        "amazon.co.uk",
+        "amazon.de",
+        "amazon.es",
+        "amazon.fr",
+        "amazon.it",
+        "amazon.in",
+        "amazon.ca"]
+    },
+
+    "keywords": {
+      "title": "Keywords",
+      "type": "array",
+      "description": "Keywords you would like to extract from Amazon",
+      "prefill": [{ "url": "Iphone X" }],
+      "editor": "requestListSources"
+    }
+  },
+  "required": [
+    "country",
+    "keywords"
+  ]
+}
