@@ -7,12 +7,12 @@ function extractSellers(page) {
         const items = $('.s-result-list [data-asin]');
         if (items.length !== 0) {
             items.each(function () {
-                const asin = $(this).attr("data-asin");
-                const sellerUrl = window.location.origin + "/gp/offer-listing/" + asin;
+                const asin = $(this).attr('data-asin');
+                const sellerUrl = `${window.location.origin}/gp/offer-listing/${asin}`;
                 itemUrls.push({
                     url: sellerUrl,
                     asin,
-                    detailUrl: window.location.origin + "/dp/" + asin,
+                    detailUrl: `${window.location.origin}/dp/${asin}`,
                     sellerUrl,
                 });
             });
@@ -23,7 +23,7 @@ function extractSellers(page) {
 
 async function parseItemUrls(page) {
     const urls = await extractSellers(page);
-    console.log("We have items -> " + urls.length);
+    console.log(`Found ${urls.length} on a site, going to crawl them.`);
     return urls;
 }
 

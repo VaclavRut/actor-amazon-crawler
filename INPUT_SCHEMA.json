@@ -35,10 +35,19 @@
       "description": "Keywords you would like to extract from Amazon",
       "prefill": ["Iphone X", "Samsung monitor 27 QHD"],
       "editor": "json"
+    },
+    "liveView": {
+      "title": "LiveView",
+      "type": "boolean",
+      "description": "If you choose this option it will enable you to view what is happening in the crawler, but it will slow down the actor.",
+      "default": true,
+      "groupCaption": "Options",
+      "groupDescription": "If you choose this option it will enable you to view what is happening in the crawler, but it will slow down the actor."
     }
   },
   "required": [
     "country",
-    "keywords"
+    "keywords",
+    "liveView"
   ]
 }
