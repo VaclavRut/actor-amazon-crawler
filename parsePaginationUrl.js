@@ -7,17 +7,16 @@ function changePageParam(param, request) {
     return request.url.replace(/page=\d+/, param);
 }
 
-async function PaginationUrlParser(page, request) {
+async function parsePaginationUrl(page, request) {
     let pageAttr = null;
 
     // try to wait for first known layout
     try {
-        // TODO: ESLint error bellow :D there need to be spaces inside the curly braces
-        await page.waitForSelector('.pagnHy', {timeout: 10000});
+        await page.waitForSelector('.pagnHy', { timeout: 10000 });
         pageAttr = await page.evaluate(() => {
-            // TODO: Double find of the same elements
-            if ($('a#pagnNextLink').length !== 0) {
-                return $('a#pagnNextLink').attr('href').match(/page=\d+/)[0];
+            const nextLinkEle = $('a#pagnNextLink');
+            if (nextLinkEle.length !== 0) {
+                return nextLinkEle.attr('href').match(/page=\d+/)[0];
             }
             return false;
         });
@@ -33,9 +32,9 @@ async function PaginationUrlParser(page, request) {
     try {
         await page.waitForSelector('.a-pagination .a-last', { timeout: 2000 });
         pageAttr = await page.evaluate(() => {
-            // TODO: Double find of the same elements
-            if ($('ul.a-pagination li.a-last:not(".a-disabled") a').length !== 0) {
-                return $('ul.a-pagination li.a-last:not(".a-disabled") a').attr('href').match(/page=\d+/)[0];
+            const paginationHrefEle = $('ul.a-pagination li.a-last:not(".a-disabled") a');
+            if (paginationHrefEle.length !== 0) {
+                return paginationHrefEle.attr('href').match(/page=\d+/)[0];
             }
             return false;
         });
@@ -47,4 +46,4 @@ async function PaginationUrlParser(page, request) {
     return false;
 }
 
-module.exports = PaginationUrlParser;
+module.exports = parsePaginationUrl;

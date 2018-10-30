@@ -21,28 +21,27 @@ function extractSellers(page) {
             let shippingInfo;
             let condition;
             const sellerName = sellerNameEle.length !== 0 ? sellerNameEle.attr('alt') : $(this).find('h3.olpSellerName').text().trim();
+
             let prime = false;
             if ($(this).find("a:contains('Fulfillment by Amazon')").length !== 0) {
                 prime = true;
             } else if (sellerName === 'Amazon.com') {
                 prime = true;
             }
+            const offerConditionEle = $(this).find('div#offerCondition');
+            const olpConditionEle = $(this).find('span.olpCondition');
 
-            // TODO: Double finds of the same jquery find
-            if ($(this).find('div#offerCondition').length !== 0) {
-                condition = $(this).find('div#offerCondition').text().replace(/\s\s+/g, ' ')
-                    .trim();
-            // TODO: Double finds of the same jquery find
-            } else if ($(this).find('span.olpCondition').length !== 0) {
-                condition = $(this).find('span.olpCondition').text().replace(/\s\s+/g, ' ')
-                    .trim();
+            if (offerConditionEle.length !== 0) {
+                condition = offerConditionEle.text().replace(/\s\s+/g, ' ').trim();
+            } else if (olpConditionEle.length !== 0) {
+                condition = olpConditionEle.text().replace(/\s\s+/g, ' ').trim();
             } else {
                 condition = 'condition unknown';
             }
-            // TODO: Double finds of the same jquery find
-            if ($(this).find('p.olpShippingInfo ').length !== 0) {
-                shippingInfo = $(this).find('p.olpShippingInfo').text().replace(/\s\s+/g, ' ')
-                    .trim();
+
+            const olpShippingInfoEle = $(this).find('p.olpShippingInfo ');
+            if (olpShippingInfoEle.length !== 0) {
+                shippingInfo = olpShippingInfoEle.text().replace(/\s\s+/g, ' ').trim();
             } else if ($("div.olpPriceColumn:contains('FREE Shipping')").length !== 0) {
                 shippingInfo = '& eligible for FREE Shipping';
             } else {
@@ -61,10 +60,10 @@ function extractSellers(page) {
     });
 }
 
-// TODO: Functions should start with lowercase and should be named
+
 // to in a way to make sense what they are doing, so this one should be
 // called parseSellerDetails
-async function SellersDetailsParser(page, request) {
+async function parseSellerDetail(page, request) {
     const sellers = await extractSellers(page);
     const item = await extractInfo(page);
 
@@ -81,4 +80,4 @@ async function SellersDetailsParser(page, request) {
     return item;
 }
 
-module.exports = SellersDetailsParser;
+module.exports = parseSellerDetail;

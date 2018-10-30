@@ -1,9 +1,9 @@
 /* global $, window */
 const Apify = require('apify');
-const SearchUrlsCreator = require('./SearchUrlsCreator');
-const SellersDetailsParser = require('./SellersDetailsParser');
-const parseItemUrls = require('./ItemUrlsParser');
-const PaginationUrlsParser = require('./PaginationUrlParser');
+const createSearchUrls = require('./createSearchUrls');
+const parseSellerDetail = require('./parseSellerDetail');
+const parseItemUrls = require('./parseItemUrls');
+const parsePaginationUrl = require('./parsePaginationUrl');
 
 Apify.main(async () => {
     // Get queue and enqueue first url.
@@ -11,7 +11,7 @@ Apify.main(async () => {
     const input = await Apify.getValue('INPUT');
 
     // based on the input country and keywords, generate the search urls
-    const urls = await SearchUrlsCreator(input);
+    const urls = await createSearchUrls(input);
 
     for (const searchUrl of urls) {
         await requestQueue.addRequest({
@@ -88,14 +88,14 @@ Apify.main(async () => {
             await Apify.utils.puppeteer.injectJQuery(page);
             // added delay not to crawl too fast
             await page.waitFor(Math.floor(Math.random() * 5000) + 1000);
-            // add pagintion and items on the search
+            // add pagination and items on the search
             if (request.userData.label === 'page') {
                 // solve pagination if on the page, now support two layouts
-                const enqueuPagination = await PaginationUrlsParser(page, request);
-                if (enqueuPagination !== false) {
-                    console.log(`Adding new pagination of search ${enqueuPagination}`);
+                const enqueuePagination = await parsePaginationUrl(page, request);
+                if (enqueuePagination !== false) {
+                    console.log(`Adding new pagination of search ${enqueuePagination}`);
                     await requestQueue.addRequest({
-                        url: enqueuPagination,
+                        url: enqueuePagination,
                         userData: {
                             label: 'page',
                             keyword: request.userData.keyword,
@@ -129,7 +129,7 @@ Apify.main(async () => {
             } else if (request.userData.label === 'seller') {
                 try {
                     await page.waitForSelector('.olpOfferList');
-                    const item = await SellersDetailsParser(page, request);
+                    const item = await parseSellerDetail(page, request);
 
                     const paginationUrlSeller = await page.evaluate(() => {
                         const paginationEle = $('ul.a-pagination li.a-last a');
@@ -155,8 +155,7 @@ Apify.main(async () => {
                         await Apify.pushData(item);
                     }
                 } catch (error) {
-                    // TODO: console.error
-                    console.log(error);
+                    console.error(error);
                     await Apify.pushData({
                         status: 'No sellers for this keyword.',
                         keyword: request.userData.keyword,
@@ -167,7 +166,11 @@ Apify.main(async () => {
 
         // If request failed 4 times then this function is executed.
         handleFailedRequestFunction: async ({ request }) => {
-            // TODO: Maybe save this to dataset so that we know that this url failed?
+            await Apify.pushData({
+                status: 'Page failed 4 times, check it out, what happened.',
+                url: request.url,
+                keyword: request.userData.keyword,
+            });
             console.log(`Request ${request.url} failed 4 times`);
         },
     });
