@@ -5,6 +5,7 @@ const parseSellerDetail = require('./parseSellerDetail');
 const parseItemUrls = require('./parseItemUrls');
 const parsePaginationUrl = require('./parsePaginationUrl');
 
+// TODO: Add an option to limit number of results for each keyword
 Apify.main(async () => {
     // Get queue and enqueue first url.
     const requestQueue = await Apify.openRequestQueue();
@@ -27,7 +28,7 @@ Apify.main(async () => {
     const crawler = new Apify.PuppeteerCrawler({
         requestQueue,
         maxOpenPagesPerInstance: 5,
-        retireInstanceAfterRequestCount: 10,
+        retireInstanceAfterRequestCount: 5,
         launchPuppeteerFunction: async () => Apify.launchPuppeteer({
             useApifyProxy: true,
             headless: true,
