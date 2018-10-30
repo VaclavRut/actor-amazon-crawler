@@ -1,8 +1,8 @@
 class ItemUrlsParser {
 
     async run(page) {
-        let urls = await this.extractSellers(page);
-        console.log("We have items -> " + urls.length);
+        const urls = await this.extractSellers(page);
+        console.log(`Adding ${urls.length} items from search page.`);
         return urls;
     }
     extractSellers(page) {

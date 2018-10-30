@@ -6,7 +6,7 @@
     "country": {
       "title": "Amazon market",
       "type": "string",
-      "description": "Select your country on Amazon.com",
+      "description": "Select your Amazon domain",
       "editor": "select",
       "default": "US",
       "enum": [
