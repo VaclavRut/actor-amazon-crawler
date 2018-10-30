@@ -6,7 +6,11 @@
 	"dependencies": {
 		"apify": "^0.8.0"
 	},
-	"devDependencies": {},
+	"devDependencies": {
+		"eslint": "^5.8.0",
+		"eslint-config-airbnb": "^17.1.0",
+		"eslint-plugin-import": "^2.14.0"
+	},
 	"scripts": {
 		"start": "node main.js",
 		"test": "echo \"Error: no test specified\" && exit 1"

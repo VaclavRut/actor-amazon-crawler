@@ -1,38 +1,39 @@
 class SellersDetailsParser {
-
     async run(page, request) {
         const sellers = await this.extractSellers(page);
-        let item = await this.extractInfo(page);
+        const item = await this.extractInfo(page);
 
         if (request.userData.sellers) {
             item.sellers = request.userData.sellers.concat(sellers);
         } else {
-            item.sellers =  sellers;
+            item.sellers = sellers;
         }
-        item.keyword = request.userData.keyword;
-        item.asin = request.userData.asin;
-        item.itemDetailUrl = request.userData.detailUrl;
-        item.sellerUrl = request.userData.sellerUrl;
+        const { keyword, asin, detailUrl, sellerUrl } = request.userData;
+        item.keyword = keyword;
+        item.asin = asin;
+        item.itemDetailUrl = detailUrl;
+        item.sellerUrl = sellerUrl;
         return item;
     }
 
     extractInfo(page){
         return page.evaluate(() => {
+            const h1 = $("h1");
+            const images = $('div#olpProductImage img');
             return {
-                title: $("h1").length !== 0 ? $("h1").text().trim() : "no item title",
-                image: $('div#olpProductImage img').length !== 0? $('div#olpProductImage img').attr("src").replace("_SS160_.","") : "no image"
+                title: h1.length !== 0 ? h1.text().trim() : "no item title",
+                image: images.length !== 0? images.attr("src").replace("_SS160_.","") : "no image"
             }
-        })
-
+        });
     }
-
 
     extractSellers(page) {
         return page.evaluate(() => {
             let sellers = [];
 
             $('div.olpOffer').each(function () {
-                let price = $(this).find("span.olpOfferPrice").length !== 0 ? $(this).find("span.olpOfferPrice").text().trim() : "price not displayed";
+                const priceElem = $(this).find("span.olpOfferPrice");
+                const price = priceElem.length !== 0 ? priceElem.text().trim() : "price not displayed";
                 let shippingInfo;
                 let condition;
                 let sellerName = $(this).find("h3.olpSellerName img").length !== 0 ? $(this).find("h3.olpSellerName img").attr("alt") : $(this).find("h3.olpSellerName").text().trim();
@@ -70,8 +71,6 @@ class SellersDetailsParser {
             return sellers;
         })
     }
-
-
 }
 
 module.exports = SellersDetailsParser

@@ -1,7 +1,7 @@
 const Apify = require('apify');
 const SearchUrlsCreator = require('./SearchUrlsCreator');
 const SellersDetailsParser = require('./SellersDetailsParser');
-const ItemUrlsParser = require('./ItemUrlsParser');
+const parseItemUrls = require('./ItemUrlsParser');
 const PaginationUrlsParser = require('./PaginationUrlParser');
 
 Apify.main(async () => {
@@ -11,51 +11,60 @@ Apify.main(async () => {
 
     const searchUrlsCreator = new SearchUrlsCreator();
     const sellerParser = new SellersDetailsParser();
-    const itemsUrls = new ItemUrlsParser();
     const paginationUrl = new PaginationUrlsParser();
 
     //based on the input country and keywords, generate the search urls
-    let urls = await searchUrlsCreator.run(input);
+    const urls = await searchUrlsCreator.run(input);
 
-    for (let searchUrl of urls) {
-        await requestQueue.addRequest(new Apify.Request({
+    for (const searchUrl of urls) {
+        await requestQueue.addRequest({
             url: searchUrl.url,
             userData: {
                 label: "page",
                 keyword: searchUrl.keyword
             }
-        }));
+        });
     }
 
     // Create crawler.
     const crawler = new Apify.PuppeteerCrawler({
         requestQueue,
-        maxConcurrency: 10,
         maxOpenPagesPerInstance: 5,
         retireInstanceAfterRequestCount: 10,
         launchPuppeteerFunction: async () => Apify.launchPuppeteer({
             useApifyProxy: true,
-            apifyProxyGroups: ['BUYPROXIES94952'],
             headless: true,
             userAgent: await Apify.utils.getRandomUserAgent(),
+            // TODO: Set in input with explanation
             liveView: true
         }),
         // This page is executed for each request.
         // If request failes then it's retried 3 times.
         // Parameter page is Puppeteers page object with loaded page.
-        gotoFunction: async ({page, request}) => {
+        gotoFunction: async ({ page, request }) => {
             await Apify.utils.puppeteer.hideWebDriver(page);
 
             await page.setRequestInterception(true);
 
-            page.on('request', (request) => {
-                const url = request.url();
+            page.on('request', (req) => {
+                const url = req.url();
+                const resourceType = req.resourceType();
+                const ignoredTypes = [
+                    'stylesheet',
+                    'image',
+                    'media',
+                    'font',
+                    'script',
+                    'texttrack',
+                    'xhr',
+                    'fetch',
+                    'eventsource',
+                    'websocket',
+                    'manifest',
+                    'other',
+                ];
+
                 const ignored = [
-                    '.js',
-                    '.png',
-                    '.gif',
-                    '.css',
-                    'static/fonts',
                     'js_tracking',
                     'facebook.com',
                     'googleapis.com',
@@ -64,10 +73,11 @@ Apify.main(async () => {
                     'demdex.net',
                     'go-mpulse.net',
                     'foresee.com',
-                    'atgsvcs.com'
+                    'atgsvcs.com',
                 ];
 
-                const abort = ignored.some((item) => url.includes(item));
+                let abort = ignoredTypes.includes(resourceType);
+                if (!abort) abort = ignored.some((item) => url.includes(item));
 
                 if (abort) {
                     request.abort();
@@ -79,29 +89,29 @@ Apify.main(async () => {
             return page.goto(request.url);
         },
         handlePageFunction: async ({page, request}) => {
-            //added delay not to crawl too fast
-            await new Promise(resolve => setTimeout(resolve, Math.random(1000) + 1000));
-            //add pagintion and items on the search
+            await Apify.utils.puppeteer.injectJQuery(page);
+            // added delay not to crawl too fast
+            await page.waitFor(Math.floor(Math.random() * 1000) + 1000);
+            // add pagintion and items on the search
             if (request.userData.label === 'page') {
-                await Apify.utils.puppeteer.injectJQuery(page);
-                //solve pagination if on the page, now support two layouts
+                // solve pagination if on the page, now support two layouts
                 let enqueuPagination = await paginationUrl.run(page, request);
                 if (enqueuPagination !== false) {
                     console.log(`Adding new pagination of search ${enqueuPagination}`);
-                    await requestQueue.addRequest(new Apify.Request({
+                    await requestQueue.addRequest({
                         url: enqueuPagination,
                         userData: {
                             label: "page",
                             keyword: request.userData.keyword
                         }
-                    }));
+                    });
                 }
-                //add items to the queue
+                // add items to the queue
                 try {
-                    await page.waitForSelector('.s-result-list [data-asin]', {timeout: 10000});
-                    let items = await itemsUrls.run(page, request);
+                    await page.waitForSelector('.s-result-list [data-asin]', { timeout: 10000 });
+                    let items = await parseItemUrls(page, request);
                     for (let item of items) {
-                        await requestQueue.addRequest(new Apify.Request({
+                        await requestQueue.addRequest({
                             url: item.url,
                             userData: {
                                 label: "seller",
@@ -110,7 +120,7 @@ Apify.main(async () => {
                                 detailUrl: item.detailUrl,
                                 sellerUrl: item.sellerUrl
                             }
-                        }));
+                        });
                     }
                 } catch (error) {
                     await Apify.pushData({
@@ -119,31 +129,31 @@ Apify.main(async () => {
                         "keyword": request.userData.keyword
                     });
                 }
-                //extract info about item and about seller offers
+                // extract info about item and about seller offers
             } else if (request.userData.label === 'seller') {
                 try {
                     await page.waitForSelector('.olpOfferList');
-                    await Apify.utils.puppeteer.injectJQuery(page);
-                    let item = await sellerParser.run(page, request);
+                    const item = await sellerParser.run(page, request);
 
-                    let paginationUrl = await page.evaluate(() => {
+                    const paginationUrl = await page.evaluate(() => {
                         if ($('ul.a-pagination li.a-last a').length !== 0) {
                             return window.location.origin + $('ul.a-pagination li.a-last a').attr("href")
                         } else {
                             return false;
                         }
                     });
-                    //if there is a pagination, go to another page
+
+                    // if there is a pagination, go to another page
                     if (paginationUrl !== false) {
                         console.log(`Seller detail has pagination, crawling that now -> ${paginationUrl}`)
-                        await requestQueue.addRequest(new Apify.Request({
+                        await requestQueue.addRequest({
                             url: paginationUrl,
                             userData: {
                                 label: "seller",
                                 keyword: request.userData.keyword,
                                 sellers: item.sellers
                             }
-                        }));
+                        });
                     } else {
                         console.log(`Saving item ${item.title}, url: ${request.url}`)
                         await Apify.pushData(item);
