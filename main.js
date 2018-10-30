@@ -35,7 +35,6 @@ Apify.main(async () => {
         retireInstanceAfterRequestCount: 10,
         launchPuppeteerFunction: async () => Apify.launchPuppeteer({
             useApifyProxy: true,
-            apifyProxyGroups: ['BUYPROXIES94952'],
             headless: true,
             userAgent: await Apify.utils.getRandomUserAgent(),
             liveView: true

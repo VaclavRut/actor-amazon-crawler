@@ -18,6 +18,7 @@ If you want to add another country, contact us.
 
 Configuration then extracts all seller offers for a given keyword, so if there is pagination on the seller offers page, you get all offers!
 
+For proper function of the actor are proxies required, it is not recommended to run it on a free account for more than sample of results.
 ## Sample result
 ```
 {
