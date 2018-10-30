@@ -155,6 +155,7 @@ Apify.main(async () => {
                         await Apify.pushData(item);
                     }
                 } catch (error) {
+                    // TODO: console.error
                     console.log(error);
                     await Apify.pushData({
                         status: 'No sellers for this keyword.',
@@ -166,6 +167,7 @@ Apify.main(async () => {
 
         // If request failed 4 times then this function is executed.
         handleFailedRequestFunction: async ({ request }) => {
+            // TODO: Maybe save this to dataset so that we know that this url failed?
             console.log(`Request ${request.url} failed 4 times`);
         },
     });

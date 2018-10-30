@@ -14,6 +14,7 @@ function getBaseUrl(country) {
     return url;
 }
 
+// TODO: Rename to createSearchUrls
 async function searchUrlsCreator(input) {
     if (!input.country) {
         throw new Error('Country required');

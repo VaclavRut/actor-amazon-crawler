@@ -12,8 +12,10 @@ async function PaginationUrlParser(page, request) {
 
     // try to wait for first known layout
     try {
+        // TODO: ESLint error bellow :D there need to be spaces inside the curly braces
         await page.waitForSelector('.pagnHy', {timeout: 10000});
         pageAttr = await page.evaluate(() => {
+            // TODO: Double find of the same elements
             if ($('a#pagnNextLink').length !== 0) {
                 return $('a#pagnNextLink').attr('href').match(/page=\d+/)[0];
             }
@@ -31,6 +33,7 @@ async function PaginationUrlParser(page, request) {
     try {
         await page.waitForSelector('.a-pagination .a-last', { timeout: 2000 });
         pageAttr = await page.evaluate(() => {
+            // TODO: Double find of the same elements
             if ($('ul.a-pagination li.a-last:not(".a-disabled") a').length !== 0) {
                 return $('ul.a-pagination li.a-last:not(".a-disabled") a').attr('href').match(/page=\d+/)[0];
             }
