@@ -18,9 +18,10 @@ If you want to add another country, contact us.
 
 Configuration then extracts all seller offers for a given keyword, so if there is pagination on the seller offers page, you get all offers!
 
-For proper function of the actor are proxies required, it is not recommended to run it on a free account for more than sample of results.
-
 LiveView - If you choose to enable the LiveView (or specify it in the input manually) it will enable you to view what is happening in the crawler, but it will slow down the actor
+#### Proxy
+For proper function of the actor are proxies required, it is not recommended to run it on a free account for more than sample of results.
+By default is using this configuration all proxies that you have access to, but if you are on the free plan, number of the proxies is very limited.
 
 ## Sample result
 ```
