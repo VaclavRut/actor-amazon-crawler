@@ -153,6 +153,7 @@ Apify.main(async () => {
                         });
                     } else {
                         console.log(`Saving item ${item.title}, url: ${request.url}`);
+                        // TODO need to handle the number of the results
                         await Apify.pushData(item);
                     }
                 } catch (error) {
