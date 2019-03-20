@@ -40,7 +40,7 @@
       "title": "Number of results",
       "type": "integer",
       "description": "Number of results you would like to save in total.",
-      "prefill": 5,
+      "default": 5,
       "editor": "number"
     },
     "liveView": {
