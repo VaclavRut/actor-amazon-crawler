@@ -40,9 +40,9 @@
       "title": "Number of results",
       "type": "integer",
       "description": "Number of results you would like to save in total.",
-      "prefill": "5",
+      "prefill": 5,
       "default": null,
-      "editor": "textfield"
+      "editor": "json"
     },
     "liveView": {
       "title": "LiveView",
