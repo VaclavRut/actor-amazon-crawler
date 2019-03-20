@@ -36,6 +36,13 @@
       "prefill": ["Iphone X", "Samsung monitor 27 QHD"],
       "editor": "json"
     },
+      "maxResults": {
+          "title": "Number of results",
+          "type": "integer",
+          "description": "Number of results you would like to save in total.",
+          "prefill": 10,
+          "editor": "textfield"
+      },
     "liveView": {
       "title": "LiveView",
       "type": "boolean",

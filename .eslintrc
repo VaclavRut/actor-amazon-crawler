@@ -1,28 +1,34 @@
 {
-    "root": true,
-    "env": {
-     "es6": true,
-     "node": true
-    },
-    "extends": ["airbnb/base"],
+    "extends": ["airbnb-base"],
+    "plugins": [
+        "import",
+        "promise"
+    ],
     "parserOptions": {
-     "ecmaVersion": 2017,
-     "sourceType": "module",
-     "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
-     }
+        "ecmaVersion": 2018,
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "globals": {
+        "Npm": true,
+        "document": true,
+        "fetch": true
+    },
+    "env": {
+        "es6": true
     },
     "rules": {
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "no-underscore-dangle": [2, {
-          "allow": ["_id", "_outputSeqNo", "_queueOrderNo", "_skipOutput", "_retryCount", "_crashesCount", "_pageFailed", "_pageCrashed"],
-          "allowAfterThis": true
+            "allow": ["_id", "_outputSeqNo", "_queueOrderNo", "_skipOutput", "_retryCount", "_crashesCount", "_pageFailed", "_pageCrashed"],
+            "allowAfterThis": true
         }],
         "no-param-reassign": 0,
         "consistent-return": 0,
         "array-callback-return": 0,
         "no-plusplus": 0,
-        "max-len": ["error", 150],
+        "max-len": ["error", 150, { "ignoreTemplateLiterals": true }],
         "func-names": 0,
         "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
         "import/prefer-default-export": 0,
@@ -34,6 +40,7 @@
         "arrow-body-style": 0,
         "arrow-parens": ["error", "always"],
         "no-restricted-syntax": 0,
-        "no-console": 0
+        "no-console": 0,
+        "no-continue": 0
     }
-   }
+}

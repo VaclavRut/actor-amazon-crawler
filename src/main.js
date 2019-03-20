@@ -4,13 +4,14 @@ const createSearchUrls = require('./createSearchUrls');
 const parseSellerDetail = require('./parseSellerDetail');
 const parseItemUrls = require('./parseItemUrls');
 const parsePaginationUrl = require('./parsePaginationUrl');
+const saveItem = require('./utils');
 
 // TODO: Add an option to limit number of results for each keyword
 Apify.main(async () => {
     // Get queue and enqueue first url.
     const requestQueue = await Apify.openRequestQueue();
     const input = await Apify.getValue('INPUT');
-
+    const env = await Apify.getEnv();
     // based on the input country and keywords, generate the search urls
     const urls = await createSearchUrls(input);
 
@@ -117,7 +118,7 @@ Apify.main(async () => {
                                 detailUrl: item.detailUrl,
                                 sellerUrl: item.sellerUrl,
                             },
-                        });
+                        }, { forefront: true });
                     }
                 } catch (error) {
                     await Apify.pushData({
@@ -150,17 +151,21 @@ Apify.main(async () => {
                                 keyword: request.userData.keyword,
                                 sellers: item.sellers,
                             },
-                        });
+                        }, { forefront: true });
                     } else {
                         console.log(`Saving item ${item.title}, url: ${request.url}`);
-                        await Apify.pushData(item);
+                        await saveItem('RESULT', request, item, input, env.defaultDatasetId);
+                        // await Apify.pushData(item);
                     }
                 } catch (error) {
                     console.error(error);
+                    await saveItem('NORESULT', request, null, input, env.defaultDatasetId);
+                    /*
                     await Apify.pushData({
                         status: 'No sellers for this keyword.',
                         keyword: request.userData.keyword,
                     });
+                    */
                 }
             }
         },
