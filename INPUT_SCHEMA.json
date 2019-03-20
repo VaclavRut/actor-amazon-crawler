@@ -41,7 +41,6 @@
       "type": "integer",
       "description": "Number of results you would like to save in total.",
       "prefill": 5,
-      "default": null,
       "editor": "json"
     },
     "liveView": {
