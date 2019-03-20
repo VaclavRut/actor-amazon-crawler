@@ -30,7 +30,7 @@
     },
 
     "keywords": {
-      "title": "Keywords",
+      "title": "Keywords to search",
       "type": "array",
       "description": "Keywords you would like to extract from Amazon",
       "prefill": ["Iphone X", "Samsung monitor 27 QHD"],
