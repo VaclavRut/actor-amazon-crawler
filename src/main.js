@@ -31,9 +31,11 @@ Apify.main(async () => {
         maxRequestsPerCrawl: input.maxRequestsPerCrawl || null,
         retireInstanceAfterRequestCount: 80,
         useApifyProxy: true,
+        apifyProxyGroups: input.apifyProxyGroups || null,
         maxRequestRetries: 6,
         handlePageTimeoutSecs: 2.5 * 60 * 1000,
         liveView: input.liveView ? input.liveView : true,
+        country: input.country,
         autoscaledPoolOptions: {
             systemStatusOptions: {
                 maxEventLoopOverloadedRatio: 0.65,
@@ -49,7 +51,7 @@ Apify.main(async () => {
         ...config,
         maxOpenPagesPerInstance: 5,
         retireInstanceAfterRequestCount: 5,
-        handlePageFunction: async ({ $, html, request }) => {
+        handlePageFunction: async ({ $, request }) => {
             const urlOrigin = await getOriginUrl(request);
             // add pagination and items on the search
             if (request.userData.label === 'page') {
@@ -96,7 +98,7 @@ Apify.main(async () => {
                     const paginationEle = $('ul.a-pagination li.a-last a');
                     if (paginationEle.length !== 0) {
                         paginationUrlSeller = urlOrigin + paginationEle.attr('href');
-                    }else {
+                    } else {
                         paginationUrlSeller = false;
                     }
 
