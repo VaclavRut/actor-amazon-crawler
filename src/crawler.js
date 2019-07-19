@@ -106,7 +106,7 @@ class SessionCheerioCrawler extends Apify.CheerioCrawler {
     _getProxyUrl(proxySession, request) {
         const { country } = request.userData;
         if (this.useApifyProxy && (this.apifyProxyGroups && this.apifyProxyGroups.length)) {
-            return `http://groups-${this.apifyProxyGroups.join('+')},session-${proxySession},country-${country || this.country}:${this.proxyPassword}@proxy.apify.com:8000`;
+            return `http://groups-${this.apifyProxyGroups.join('+')},session-${proxySession},country-${country ? country.toUpperCase() : this.country}:${this.proxyPassword}@proxy.apify.com:8000`;
         }
         if (this.useApifyProxy && (!this.apifyProxyGroups || this.apifyProxyGroups.length === 0)) {
             return `http://session-${proxySession},country-US:${this.proxyPassword}@proxy.apify.com:8000`;
