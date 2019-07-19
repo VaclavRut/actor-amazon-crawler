@@ -1,7 +1,7 @@
 const Apify = require('apify');
 const rp = require('request-promise');
 const tough = require('tough-cookie');
-const {getHostname, getCurrency} = require('./utils')
+const { getHostname, getCurrency } = require('./utils');
 
 // TODO clean the session part
 
@@ -13,6 +13,11 @@ class SessionCheerioCrawler extends Apify.CheerioCrawler {
         this.maxSessionUsage = options.maxSessionUsage || 80;
         this.proxyPassword = process.env.APIFY_PROXY_PASSWORD;
         this.currency = options.currency || 'USD';
+        if (options.country && options.country.length === 2) {
+            this.country = options.country.toUpperCase();
+        } else {
+            this.country = 'US';
+        }
     }
 
     __createSession() {
@@ -74,7 +79,7 @@ class SessionCheerioCrawler extends Apify.CheerioCrawler {
                 'Accept-Encoding': 'gzip, deflate',
             }),
             strictSSL: !this.ignoreSslErrors,
-            proxy: this._getProxyUrl(session.name),
+            proxy: this._getProxyUrl(session.name, request),
             jar: session.jar,
         };
         return Object.assign({}, this.requestOptions, mandatoryRequestOptions);
@@ -98,9 +103,10 @@ class SessionCheerioCrawler extends Apify.CheerioCrawler {
         }
     }
 
-    _getProxyUrl(proxySession) {
+    _getProxyUrl(proxySession, request) {
+        const { country } = request.userData;
         if (this.useApifyProxy && (this.apifyProxyGroups && this.apifyProxyGroups.length)) {
-            return `http://groups-${this.apifyProxyGroups.join('+')},session-${proxySession},country-US:${this.proxyPassword}@proxy.apify.com:8000`;
+            return `http://groups-${this.apifyProxyGroups.join('+')},session-${proxySession},country-${country || this.country}:${this.proxyPassword}@proxy.apify.com:8000`;
         }
         if (this.useApifyProxy && (!this.apifyProxyGroups || this.apifyProxyGroups.length === 0)) {
             return `http://session-${proxySession},country-US:${this.proxyPassword}@proxy.apify.com:8000`;
