@@ -18,7 +18,7 @@ If you want to add another country, contact us.
 
 Configuration then extracts all seller offers for a given keyword, so if there is pagination on the seller offers page, you get all offers!
 
-#####Asin crawling
+##### Asin crawling
 One of the features is to get price offers for a list of ASINs, if this what you need, you can specify the ASINs on the input with combination of countries to get results for.
 Keep in mind that if you specify asins on the input, keywords search will be skipped, those functions can't be combined in one run.
 ```
