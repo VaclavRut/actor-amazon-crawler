@@ -18,6 +18,18 @@ If you want to add another country, contact us.
 
 Configuration then extracts all seller offers for a given keyword, so if there is pagination on the seller offers page, you get all offers!
 
+#####Asin crawling
+One of the features is to get price offers for a list of ASINs, if this what you need, you can specify the ASINs on the input with combination of countries to get results for.
+Keep in mind that if you specify asins on the input, keywords search will be skipped, those functions can't be combined in one run.
+```
+"asins": [{
+      "asin":"B07JG7DS1T",
+      "countries":["de","it","es","gb","us","fr","in","ca"]
+  }]
+```
+With this setup, we will check for all countries whether there is that ASIN available and get all seller offers for that.
+
+##### Additional options
 LiveView - If you choose to enable the LiveView (or specify it in the input manually) it will enable you to view what is happening in the crawler, but it will slow down the actor
 
 maxResults - If you want to limit number of results to extract, set this value with number of results, otherwise keep it blank or 0.
@@ -26,6 +38,10 @@ maxResults - If you want to limit number of results to extract, set this value w
 For proper function of the actor are proxies required, it is not recommended to run it on a free account for more than sample of results.
 By default is using this configuration all proxies that you have access to, but if you are on the free plan, number of the proxies is very limited.
 
+If you have purchased a residential proxy, you can specify it on the input, also you can specify just some proxy groups if it is your desire.
+```
+"apifyProxyGroups": ["RESIDENTIAL"]
+```
 ## Sample result
 ```
 {
@@ -82,7 +98,12 @@ By default is using this configuration all proxies that you have access to, but 
   "maxResults":10,
   "country":"DE",
   "keywords": [ "samsung monitor 27", "Iphone XR" ],
-  "liveView": true
+  "liveView": true,
+  "apifyProxyGroups": ["RESIDENTIAL"], //optional
+  "asins": [{ // this is additional feature
+      "asin":"B07JG7DS1T",
+      "countries":["de","it","es","gb","us","fr","in","ca"]
+  }]
 }
 
 ```
