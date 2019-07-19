@@ -81,6 +81,8 @@ function getCurrency(request) {
             return 'INR';
         case 'www.amazon.ca':
             return 'CAD';
+        case 'www.amazon.es':
+            return 'EUR';
     }
 }
 
