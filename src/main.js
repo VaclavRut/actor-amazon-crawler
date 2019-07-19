@@ -15,21 +15,13 @@ Apify.main(async () => {
     const env = await Apify.getEnv();
     // based on the input country and keywords, generate the search urls
     const urls = await createSearchUrls(input);
-
     for (const searchUrl of urls) {
-        await requestQueue.addRequest({
-            url: searchUrl.url,
-            userData: {
-                label: 'page',
-                keyword: searchUrl.keyword,
-            },
-        });
+        await requestQueue.addRequest(searchUrl);
     }
 
     const config = {
         maxConcurrency: input.maxConcurrency || 40,
         maxRequestsPerCrawl: input.maxRequestsPerCrawl || null,
-        retireInstanceAfterRequestCount: 80,
         useApifyProxy: true,
         apifyProxyGroups: input.apifyProxyGroups || null,
         maxRequestRetries: 6,

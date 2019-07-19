@@ -6,7 +6,7 @@ You can specify more keywords on the input for one run.
 Also, you can specify on the input, which country you would like to extract the items.
 Now we support these countries:
 * US - https://www.amazon.com
-* UK - https://www.amazon.co.uk
+* GB - https://www.amazon.co.uk
 * DE - https://www.amazon.de
 * ES - https://www.amazon.es
 * FR - https://www.amazon.fr

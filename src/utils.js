@@ -67,19 +67,19 @@ function getHostname(request) {
 function getCurrency(request) {
     const parsed = url.parse(request.url, true, true);
     switch (parsed.hostname) {
-        case 'amazon.com':
+        case 'www.amazon.com':
             return 'USD';
-        case 'amazon.co.uk':
+        case 'www.amazon.co.uk':
             return 'GBP';
-        case 'amazon.de':
+        case 'www.amazon.de':
             return 'EUR';
-        case 'amazon.fr':
+        case 'www.amazon.fr':
             return 'EUR';
-        case 'amazon.it':
+        case 'www.amazon.it':
             return 'EUR';
-        case 'amazon.in':
+        case 'www.amazon.in':
             return 'INR';
-        case 'amazon.ca':
+        case 'www.amazon.ca':
             return 'CAD';
     }
 }

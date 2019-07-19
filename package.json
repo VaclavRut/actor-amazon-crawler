@@ -5,8 +5,11 @@
 	"main": "main.js",
 	"dependencies": {
 		"apify": "^0.15.2",
+		"parse-price": "^1.1.8",
+		"query-string": "^6.8.1",
 		"request-promise": "^4.2.4",
-		"url": "^0.11.0"
+		"url": "^0.11.0",
+		"url-parse": "^1.4.7"
 	},
 	"devDependencies": {},
 	"scripts": {
