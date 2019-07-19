@@ -26,7 +26,7 @@ function extractSellers($, request) {
         let price; let
             priceParsed = null;
         if (priceElem.length !== 0) {
-            price = priceElem.text().trim().replace('Rs.','Rs');
+            price = priceElem.text().trim().replace('Rs.', 'Rs');
             priceParsed = parsePrice(price);
         } else {
             price = 'price not displayed';
@@ -71,7 +71,7 @@ function extractSellers($, request) {
             sellerName,
             prime,
             shippingInfo,
-            sellerShopUrl
+            shopUrl: sellerShopUrl,
         });
     });
     return sellers;
@@ -94,10 +94,12 @@ async function parseSellerDetail($, request) {
     item.keyword = keyword;
     item.asin = asin;
     item.itemDetailUrl = detailUrl;
-    item.sellerUrl = sellerUrl;
+    item.sellerOffersUrl = sellerUrl;
     item.country = country;
     item.currency = currency;
-    return item;
+    if (item.title !== 'no item title') {
+        return item;
+    }
 }
 
 module.exports = parseSellerDetail;
