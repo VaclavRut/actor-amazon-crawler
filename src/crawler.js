@@ -1,7 +1,5 @@
 const Apify = require('apify');
 const rp = require('request-promise');
-const tough = require('tough-cookie');
-const { getHostname, getCurrency } = require('./utils');
 
 // TODO clean the session part
 
@@ -58,15 +56,6 @@ class SessionCheerioCrawler extends Apify.CheerioCrawler {
 
     _getRequestOptions(request) {
         const session = this.__pickSession();
-
-        const cookie = new tough.Cookie({
-            key: 'i18n-prefs',
-            value: getCurrency(request),
-            domain: getHostname(request),
-            httpOnly: true,
-            maxAge: 31536000,
-        });
-        session.jar.setCookie(cookie.toString(), request.url);
 
         // eslint-disable-next-line no-underscore-dangle
         request.userData._session = session;
