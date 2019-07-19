@@ -37,9 +37,9 @@
       "editor": "json"
     },
     "asins": {
-      "title": "Asins to extract",
+      "title": "ASINs to extract",
       "type": "array",
-      "description": "Array of asins objects to extract, read description of the actor to understand this.",
+      "description": "Array of ASINs objects to extract, read description of the actor to understand this.",
       "prefill": [{
           "asin":"B07HBC3CNF",
           "countries":["de","it"]
@@ -50,7 +50,7 @@
       "title": "Number of results",
       "type": "integer",
       "description": "Number of results you would like to save in total.",
-      "default": 5,
+      "default": 0,
       "editor": "number"
     },
     "liveView": {

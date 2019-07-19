@@ -8,8 +8,8 @@ function extractInfo($) {
     const h1 = $('h1');
     const images = $('div#olpProductImage img');
     return {
-        title: h1.length !== 0 ? h1.text().trim() : 'no item title',
-        image: images.length !== 0 ? images.attr('src').replace('_SS160_.', '') : 'no image',
+        title: h1.length !== 0 ? h1.text().trim() : null,
+        image: images.length !== 0 ? images.attr('src').replace('_SS160_.', '') : null,
     };
 }
 function buildSellerUrl(url) {
@@ -97,9 +97,10 @@ async function parseSellerDetail($, request) {
     item.sellerOffersUrl = sellerUrl;
     item.country = country;
     item.currency = currency;
-    if (item.title !== 'no item title') {
-        return item;
+    if (item.title === null) {
+        item.status = 'This ASIN is not available for this country.';
     }
+    return item;
 }
 
 module.exports = parseSellerDetail;
