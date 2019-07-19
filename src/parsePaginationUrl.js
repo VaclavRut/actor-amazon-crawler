@@ -7,19 +7,19 @@ function changePageParam(param, request) {
     return request.url.replace(/page=\d+/, param);
 }
 
-async function parsePaginationUrl(page, request) {
+async function parsePaginationUrl($, request) {
     let pageAttr = null;
 
     // try to wait for first known layout
     try {
-        await page.waitForSelector('.pagnHy', { timeout: 10000 });
-        pageAttr = await page.evaluate(() => {
+        if ($('.pagnHy').length !== 0) {
             const nextLinkEle = $('a#pagnNextLink');
             if (nextLinkEle.length !== 0) {
-                return nextLinkEle.attr('href').match(/page=\d+/)[0];
+                pageAttr = nextLinkEle.attr('href').match(/page=\d+/)[0];
+            } else {
+                pageAttr = false;
             }
-            return false;
-        });
+        }
     } catch (error) {
         // We are ignoring this error because there can be other layout
     }
@@ -30,14 +30,14 @@ async function parsePaginationUrl(page, request) {
 
     // try to wait for second known layout
     try {
-        await page.waitForSelector('.a-pagination .a-last', { timeout: 2000 });
-        pageAttr = await page.evaluate(() => {
+        if ($('.a-pagination .a-last').length !== 0) {
             const paginationHrefEle = $('ul.a-pagination li.a-last:not(".a-disabled") a');
             if (paginationHrefEle.length !== 0) {
-                return paginationHrefEle.attr('href').match(/page=\d+/)[0];
+                pageAttr = paginationHrefEle.attr('href').match(/page=\d+/)[0];
+            } else {
+                pageAttr = false;
             }
-            return false;
-        });
+        }
     } catch (error) {
         console.log('no pagination or unknown layout of page');
     }

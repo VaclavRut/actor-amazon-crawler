@@ -1,4 +1,5 @@
 const Apify = require('apify');
+const url = require('url');
 
 async function checkSaveCount(datasetId, maxResults) {
     const dataset = await Apify.openDataset(datasetId);
@@ -46,4 +47,42 @@ async function saveItem(type, request, item, input, datasetId) {
     }
 }
 
-module.exports = saveItem;
+function getOriginUrl(request) {
+    const parsed = url.parse(request.url, true, true);
+    const originUrl = url.format({
+        protocol: parsed.protocol,
+        hostname: parsed.hostname,
+    });
+    return originUrl;
+}
+
+function getHostname(request) {
+    const parsed = url.parse(request.url, true, true);
+    const originUrl = url.format({
+        hostname: parsed.hostname,
+    });
+    return originUrl;
+}
+
+function getCurrency(request) {
+    const parsed = url.parse(request.url, true, true);
+    switch (parsed.hostname) {
+        case 'amazon.com':
+            return 'USD';
+        case 'amazon.co.uk':
+            return 'GBP';
+        case 'amazon.de':
+            return 'EUR';
+        case 'amazon.fr':
+            return 'EUR';
+        case 'amazon.it':
+            return 'EUR';
+        case 'amazon.in':
+            return 'INR';
+        case 'amazon.ca':
+            return 'CAD';
+    }
+}
+
+
+module.exports = { saveItem, getOriginUrl, getHostname, getCurrency };

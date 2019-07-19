@@ -4,7 +4,8 @@ const createSearchUrls = require('./createSearchUrls');
 const parseSellerDetail = require('./parseSellerDetail');
 const parseItemUrls = require('./parseItemUrls');
 const parsePaginationUrl = require('./parsePaginationUrl');
-const saveItem = require('./utils');
+const { saveItem, getOriginUrl } = require('./utils');
+const SessionsCheerioCrawler = require('./crawler');
 
 // TODO: Add an option to limit number of results for each keyword
 Apify.main(async () => {
@@ -25,75 +26,35 @@ Apify.main(async () => {
         });
     }
 
+    const config = {
+        maxConcurrency: input.maxConcurrency || 40,
+        maxRequestsPerCrawl: input.maxRequestsPerCrawl || null,
+        retireInstanceAfterRequestCount: 80,
+        useApifyProxy: true,
+        maxRequestRetries: 6,
+        handlePageTimeoutSecs: 2.5 * 60 * 1000,
+        liveView: input.liveView ? input.liveView : true,
+        autoscaledPoolOptions: {
+            systemStatusOptions: {
+                maxEventLoopOverloadedRatio: 0.65,
+                maxCpuOverloadedRatio: 0.4,
+                maxClientOverloadedRatio: 0.3,
+            },
+        },
+    };
+
     // Create crawler.
-    const crawler = new Apify.PuppeteerCrawler({
+    const crawler = new SessionsCheerioCrawler({
         requestQueue,
+        ...config,
         maxOpenPagesPerInstance: 5,
         retireInstanceAfterRequestCount: 5,
-        launchPuppeteerFunction: async () => Apify.launchPuppeteer({
-            useApifyProxy: true,
-            headless: true,
-            userAgent: await Apify.utils.getRandomUserAgent(),
-            liveView: input.liveView ? input.liveView : true,
-        }),
-        // This page is executed for each request.
-        // If request fails then it's retried 3 times.
-        // Parameter page is Puppeteers page object with loaded page.
-        gotoFunction: async ({ page, request }) => {
-            await Apify.utils.puppeteer.hideWebDriver(page);
-
-            await page.setRequestInterception(true);
-
-            page.on('request', (req) => {
-                const url = req.url();
-                const resourceType = req.resourceType();
-                const ignoredTypes = [
-                    'stylesheet',
-                    'image',
-                    'media',
-                    'font',
-                    'script',
-                    'texttrack',
-                    'xhr',
-                    'fetch',
-                    'eventsource',
-                    'websocket',
-                    'manifest',
-                    'other',
-                ];
-
-                const ignored = [
-                    'js_tracking',
-                    'facebook.com',
-                    'googleapis.com',
-                    'ibmcloud.com',
-                    'omtrdc.net',
-                    'demdex.net',
-                    'go-mpulse.net',
-                    'foresee.com',
-                    'atgsvcs.com',
-                ];
-
-                let abort = ignoredTypes.includes(resourceType);
-                if (!abort) abort = ignored.some((item) => url.includes(item));
-
-                if (abort) {
-                    req.abort();
-                } else {
-                    req.continue();
-                }
-            });
-
-            return page.goto(request.url);
-        },
-        handlePageFunction: async ({ page, request }) => {
-            await Apify.utils.puppeteer.injectJQuery(page);
-            // added delay not to crawl too fast
-            await page.waitFor(Math.floor(Math.random() * 5000) + 1000);
+        handlePageFunction: async ({ $, html, request }) => {
+            const urlOrigin = await getOriginUrl(request);
             // add pagination and items on the search
             if (request.userData.label === 'page') {
                 // solve pagination if on the page, now support two layouts
-                const enqueuePagination = await parsePaginationUrl(page, request);
+                const enqueuePagination = await parsePaginationUrl($, request);
                 if (enqueuePagination !== false) {
                     console.log(`Adding new pagination of search ${enqueuePagination}`);
                     await requestQueue.addRequest({
@@ -106,8 +67,7 @@ Apify.main(async () => {
                 }
                 // add items to the queue
                 try {
-                    await page.waitForSelector('.s-result-list [data-asin]', { timeout: 10000 });
-                    const items = await parseItemUrls(page, request);
+                    const items = await parseItemUrls($, request);
                     for (const item of items) {
                         await requestQueue.addRequest({
                             url: item.url,
@@ -130,16 +90,15 @@ Apify.main(async () => {
                 // extract info about item and about seller offers
             } else if (request.userData.label === 'seller') {
                 try {
-                    await page.waitForSelector('.olpOfferList');
-                    const item = await parseSellerDetail(page, request);
+                    const item = await parseSellerDetail($, request);
 
-                    const paginationUrlSeller = await page.evaluate(() => {
-                        const paginationEle = $('ul.a-pagination li.a-last a');
-                        if (paginationEle.length !== 0) {
-                            return window.location.origin + paginationEle.attr('href');
-                        }
-                        return false;
-                    });
+                    let paginationUrlSeller;
+                    const paginationEle = $('ul.a-pagination li.a-last a');
+                    if (paginationEle.length !== 0) {
+                        paginationUrlSeller = urlOrigin + paginationEle.attr('href');
+                    }else {
+                        paginationUrlSeller = false;
+                    }
 
                     // if there is a pagination, go to another page
                     if (paginationUrlSeller !== false) {
@@ -160,12 +119,6 @@ Apify.main(async () => {
                 } catch (error) {
                     console.error(error);
                     await saveItem('NORESULT', request, null, input, env.defaultDatasetId);
-                    /*
-                    await Apify.pushData({
-                        status: 'No sellers for this keyword.',
-                        keyword: request.userData.keyword,
-                    });
-                    */
                 }
             }
         },
