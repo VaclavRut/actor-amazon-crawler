@@ -77,6 +77,7 @@ function extractSellers($, request) {
             prime,
             shippingInfo,
             shopUrl: sellerShopUrl,
+            pricePerUnit
         });
     });
     return sellers;
