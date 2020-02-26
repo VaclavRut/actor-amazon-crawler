@@ -1,7 +1,7 @@
 ## Amazon crawler
 
 This configuration will extract items for a keywords that you will specify in the input, and it will automatically extract all pages for the given keyword.
-You can specify more keywords on the input for one run.
+You can specify more keywords on the input for one run. Also, there are more modes for the configuration to run, so check the description below.
 
 Also, you can specify on the input, which country you would like to extract the items.
 Now we support these countries:
