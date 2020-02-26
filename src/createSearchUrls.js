@@ -8,6 +8,7 @@ function getBaseUrl(country) {
         IT: 'https://www.amazon.it/',
         IN: 'https://www.amazon.in/',
         CA: 'https://www.amazon.ca/',
+        JP: 'https://www.amazon.co.jp/',
     };
     const url = baseUrls[country];
     if (!url) throw new Error('Selected country is not supported, contact us.');

@@ -13,6 +13,7 @@ Now we support these countries:
 * IT - https://www.amazon.it
 * IN - https://www.amazon.in
 * CA - https://www.amazon.ca
+* JP - https://www.amazon.co.jp
 
 If you want to add another country, contact us.
 

@@ -17,7 +17,8 @@
         "FR",
         "IT",
         "IN",
-        "CA"
+        "CA",
+        "JP"
       ],
       "enumTitles": ["amazon.com",
         "amazon.co.uk",
@@ -26,7 +27,8 @@
         "amazon.fr",
         "amazon.it",
         "amazon.in",
-        "amazon.ca"]
+        "amazon.ca",
+        "amazon.co.jp"]
     },
 
     "keywords": {

@@ -83,7 +83,9 @@ function getCurrency(request) {
             return 'CAD';
         case 'www.amazon.es':
             return 'EUR';
-    }
+        case 'www.amazon.co.jp':
+            return 'JPY';
+        }
 }
 
 
