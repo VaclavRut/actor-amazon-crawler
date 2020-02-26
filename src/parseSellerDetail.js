@@ -24,16 +24,18 @@ function extractSellers($, request) {
         const priceElem = $(this).find('span.olpOfferPrice');
         const pricePerUnitElem = $(this).find('span.pricePerUnit');
         const sellerNameEle = $(this).find('h3.olpSellerName img');
-        let pricePerUnit; 
-        let price; let
-            priceParsed = null;
+
+        let pricePerUnit = null;
+        let price = null;
+        let priceParsed = null;
+
         if (priceElem.length !== 0) {
             price = priceElem.text().trim().replace('Rs.', 'Rs');
             priceParsed = parsePrice(price);
         } else {
             price = 'price not displayed';
         }
-        if (pricePerUnitElem !== 0) {
+        if (pricePerUnitElem.length !== 0) {
             pricePerUnit = pricePerUnitElem.text();
         }
         let shippingInfo;
@@ -77,7 +79,7 @@ function extractSellers($, request) {
             prime,
             shippingInfo,
             shopUrl: sellerShopUrl,
-            pricePerUnit
+            pricePerUnit,
         });
     });
     return sellers;

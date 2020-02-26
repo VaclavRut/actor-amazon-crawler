@@ -17,14 +17,21 @@ function getBaseUrl(country) {
 
 async function createSearchUrls(input) {
     let searchUrlBase;
+    const urlsToProcess = [];
+
+    if (!input.country) {
+        throw new Error('Country required');
+    }
+    if ((!input.keywords) && (!input.asins && !input.asins.length) && (!input.directUrls && !input.directUrls.length)) {
+        throw new Error('Keywords/Asins required');
+    }
+
     if (input.asins) {
-        console.log(`Going to enqueue ${input.asins.length} asins`);
-        const builtUrls = [];
         for (const item of input.asins) {
             for (const country of item.countries) {
                 searchUrlBase = getBaseUrl(country.toUpperCase());
                 const sellerUrl = `${searchUrlBase}gp/offer-listing/${item.asin}`;
-                builtUrls.push({
+                urlsToProcess.push({
                     url: sellerUrl,
                     userData: {
                         label: 'seller',
@@ -36,23 +43,46 @@ async function createSearchUrls(input) {
                 });
             }
         }
-        return builtUrls;
     }
 
-    if (!input.country) {
-        throw new Error('Country required');
+    if (input.keywords) {
+        searchUrlBase = getBaseUrl(input.country);
+        if (input.keywords.length !== 0) {
+            if (input.keywords.indexOf(',') !== -1) {
+                const keywords = input.keywords.split(',');
+                for (const keyword of keywords) {
+                    urlsToProcess.push({
+                        url: `${searchUrlBase}s?k=${keyword.replace(/\\s/g, '+').trim()}`,
+                        userData: {
+                            label: 'page',
+                            keyword,
+                        },
+                    });
+                }
+            } else {
+                urlsToProcess.push({
+                    url: `${searchUrlBase}s?k=${input.keywords.replace(/\\s/g, '+').trim()}`,
+                    userData: {
+                        label: 'page',
+                        keyword: input.keywords,
+                    },
+                });
+            }
+        }
     }
-    if (!input.keywords || !input.keywords.length) {
-        throw new Error('Keywords required');
+
+    if (input.directUrls) {
+        for (const request of input.directUrls) {
+            urlsToProcess.push(request);
+        }
     }
-    searchUrlBase = getBaseUrl(input.country);
-    return input.keywords.map((keyword) => ({
-        url: `${searchUrlBase}s?k=${keyword.replace(/\\s/g, '+').trim()}`,
-        userData: {
-            label: 'page',
-            keyword,
-        },
-    }));
+
+    if (urlsToProcess.length !== 0) {
+        console.log(`Going to enqueue ${urlsToProcess.length} requests from input.`);
+        return urlsToProcess;
+    }
+
+    throw new Error('Can\'t add any requests, check your input.');
 }
 
 module.exports = createSearchUrls;

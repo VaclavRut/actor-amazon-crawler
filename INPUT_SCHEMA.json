@@ -33,8 +33,8 @@
 
     "keywords": {
       "title": "Keywords to search",
-      "type": "array",
-      "description": "Keywords you would like to extract from Amazon",
+      "type": "string",
+      "description": "Keywords you would like to extract from Amazon, comma separated",
       "prefill": ["Iphone X", "Samsung monitor 27 QHD"],
       "editor": "json"
     },
@@ -48,6 +48,22 @@
       }],
       "editor": "json"
     },
+      "directUrls": {
+          "title": "Direct urls",
+          "type": "array",
+          "description": "Array of request objects, that you neeed to scrape. Fill as many attributes as possible. Available labels are seller, detail",
+          "prefill": [{
+              "url": "https://www.amazon.de/gp/offer-listing/B07XRR7N5V/",
+              "userData": {
+                  "label": "seller",
+                  "asin": "B07XRR7N5V",
+                  "detailUrl": "https://www.amazon.de/dp/B07XRR7N5V/",
+                  "sellerUrl": "https://www.amazon.de/gp/offer-listing/B07XRR7N5V/",
+                  "country": "DE"
+              }
+          }],
+          "editor": "json"
+      },
     "maxResults": {
       "title": "Number of results",
       "type": "integer",
@@ -55,13 +71,12 @@
       "default": 0,
       "editor": "number"
     },
-    "liveView": {
-      "title": "LiveView",
-      "type": "boolean",
-      "description": "If you choose this option it will enable you to view what is happening in the crawler, but it will slow down the actor.",
-      "default": true,
-      "groupCaption": "Options",
-      "groupDescription": "If you choose this option it will enable you to view what is happening in the crawler, but it will slow down the actor."
+    "proxy":{
+        "title": "Proxy configuration",
+        "type": "object",
+        "description": "Select proxies to be used by your crawler.",
+        "prefill": { "useApifyProxy": true },
+        "editor": "proxy"
     }
   }
 }

@@ -5,7 +5,6 @@ const parseSellerDetail = require('./parseSellerDetail');
 const parseItemUrls = require('./parseItemUrls');
 const parsePaginationUrl = require('./parsePaginationUrl');
 const { saveItem, getOriginUrl } = require('./utils');
-const SessionsCheerioCrawler = require('./crawler');
 
 // TODO: Add an option to limit number of results for each keyword
 Apify.main(async () => {
@@ -16,34 +15,35 @@ Apify.main(async () => {
     // based on the input country and keywords, generate the search urls
     const urls = await createSearchUrls(input);
     for (const searchUrl of urls) {
+        console.log(searchUrl.url);
         await requestQueue.addRequest(searchUrl);
     }
 
-    const config = {
+    // Create crawler.
+    const crawler = new Apify.CheerioCrawler({
+        requestQueue,
+        useSessionPool: true,
+        sessionPoolOptions: {
+            maxPoolSize: 100,
+        },
         maxConcurrency: input.maxConcurrency || 40,
         maxRequestsPerCrawl: input.maxRequestsPerCrawl || null,
         useApifyProxy: true,
         apifyProxyGroups: input.apifyProxyGroups || null,
-        maxRequestRetries: 6,
-        handlePageTimeoutSecs: 2.5 * 60 * 1000,
-        liveView: input.liveView ? input.liveView : true,
-        country: input.country,
-        autoscaledPoolOptions: {
-            systemStatusOptions: {
-                maxEventLoopOverloadedRatio: 0.65,
-                maxCpuOverloadedRatio: 0.4,
-                maxClientOverloadedRatio: 0.3,
-            },
-        },
-    };
+        handlePageTimeoutSecs: 2.5 * 60,
+        handlePageFunction: async ({ $, request, response, session }) => {
+            // to handle blocked requests
+            const title = $('title').length !== 0 ? $('title').text().trim() : '';
+            const { statusCode } = response;
+            if (statusCode !== 200
+                || title.includes('Robot Check')
+                || title.includes('CAPTCHA')
+                || title.includes('Toutes nos excuses')
+                || title.includes('Tut uns Leid!')
+                || title.includes('Service Unavailable Error')) {
+                session.retire();
+            }
 
-    // Create crawler.
-    const crawler = new SessionsCheerioCrawler({
-        requestQueue,
-        ...config,
-        maxOpenPagesPerInstance: 5,
-        retireInstanceAfterRequestCount: 5,
-        handlePageFunction: async ({ $, request }) => {
             const urlOrigin = await getOriginUrl(request);
             // add pagination and items on the search
             if (request.userData.label === 'page') {
@@ -73,6 +73,14 @@ Apify.main(async () => {
                                 sellerUrl: item.sellerUrl,
                             },
                         }, { forefront: true });
+                    }
+
+                    if (items.length === 0) {
+                        await Apify.pushData({
+                            status: 'No items for this keyword.',
+                            url: request.url,
+                            keyword: request.userData.keyword,
+                        });
                     }
                 } catch (error) {
                     await Apify.pushData({
