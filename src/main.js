@@ -28,8 +28,7 @@ Apify.main(async () => {
         },
         maxConcurrency: input.maxConcurrency || 40,
         maxRequestsPerCrawl: input.maxRequestsPerCrawl || null,
-        useApifyProxy: true,
-        apifyProxyGroups: input.apifyProxyGroups || null,
+        ...input.proxyConfiguration,
         handlePageTimeoutSecs: 2.5 * 60,
         handlePageFunction: async ({ $, request, response, session }) => {
             // to handle blocked requests
