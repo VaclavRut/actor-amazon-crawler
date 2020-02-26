@@ -22,7 +22,9 @@ function extractSellers($, request) {
     const hostName = parseUrl(request.url).hostname;
     $('div.olpOffer').each(function () {
         const priceElem = $(this).find('span.olpOfferPrice');
+        const pricePerUnitElem = $(this).find('span.pricePerUnit');
         const sellerNameEle = $(this).find('h3.olpSellerName img');
+        let pricePerUnit; 
         let price; let
             priceParsed = null;
         if (priceElem.length !== 0) {
@@ -30,6 +32,9 @@ function extractSellers($, request) {
             priceParsed = parsePrice(price);
         } else {
             price = 'price not displayed';
+        }
+        if (pricePerUnitElem !== 0) {
+            pricePerUnit = pricePerUnitElem.text();
         }
         let shippingInfo;
         let condition;
@@ -72,6 +77,7 @@ function extractSellers($, request) {
             prime,
             shippingInfo,
             shopUrl: sellerShopUrl,
+            pricePerUnit
         });
     });
     return sellers;
