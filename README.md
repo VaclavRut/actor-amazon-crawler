@@ -29,7 +29,23 @@ Keep in mind that if you specify asins on the input, keywords search will be ski
   }]
 ```
 With this setup, we will check for all countries whether there is that ASIN available and get all seller offers for that.
+##### Direct urls crawling
+If you are more advanced and you have your ASINs already and don't want to crawl them manually, you can enqueue the requests from the input.
+Here is a sample object:
+```
+{
+              "url": "https://www.amazon.de/gp/offer-listing/B07XRR7N5V/",
+              "userData": {
+                  "label": "seller",
+                  "asin": "B07XRR7N5V",
+                  "detailUrl": "https://www.amazon.de/dp/B07XRR7N5V/",
+                  "sellerUrl": "https://www.amazon.de/gp/offer-listing/B07XRR7N5V/",
+                  "country": "DE"
+              }
+          }
+```
 
+You can use labels seller, we don't visit details now, but let me know if you want to add this feature.
 ##### Additional options
 LiveView - If you choose to enable the LiveView (or specify it in the input manually) it will enable you to view what is happening in the crawler, but it will slow down the actor
 
@@ -40,9 +56,7 @@ For proper function of the actor are proxies required, it is not recommended to 
 By default is using this configuration all proxies that you have access to, but if you are on the free plan, number of the proxies is very limited.
 
 If you have purchased a residential proxy, you can specify it on the input, also you can specify just some proxy groups if it is your desire.
-```
-"apifyProxyGroups": ["RESIDENTIAL"]
-```
+
 ## Sample result
 ```
 {
@@ -51,10 +65,13 @@ If you have purchased a residential proxy, you can specify it on the input, also
   "sellers": [
     {
       "price": "EUR 119,00",
+      "priceParsed": 119,
       "condition": "Gebraucht - Wie neu",
       "sellerName": "LapStore",
       "prime": false,
       "shippingInfo": "+ EUR 4,95 Versandkosten"
+      "shopUrl": "www.amazon.de",
+      "pricePerUnit": null
     },
     {
       "price": "EUR 129,00",
@@ -62,27 +79,8 @@ If you have purchased a residential proxy, you can specify it on the input, also
       "sellerName": "brandused",
       "prime": false,
       "shippingInfo": "KOSTENFREIE Lieferung"
-    },
-    {
-      "price": "EUR 199,95",
-      "condition": "B-Ware & 2.Wahl",
-      "sellerName": "TechPoint1111",
-      "prime": false,
-      "shippingInfo": "KOSTENFREIE Lieferung"
-    },
-    {
-      "price": "EUR 171,00",
-      "condition": "Gebraucht - Akzeptabel",
-      "sellerName": "handypcwelt1974",
-      "prime": false,
-      "shippingInfo": "+ EUR 89,00 Versandkosten"
-    },
-    {
-      "price": "EUR 196,00",
-      "condition": "Gebraucht - Sehr gut",
-      "sellerName": "handypcwelt1974",
-      "prime": false,
-      "shippingInfo": "+ EUR 89,00 Versandkosten"
+      "shopUrl": "www.amazon.de",
+      "pricePerUnit": null
     }
   ],
   "keyword": "samsung monitor 27",
@@ -90,21 +88,4 @@ If you have purchased a residential proxy, you can specify it on the input, also
   "itemDetailUrl": "https://www.amazon.de/dp/B005CYXNV2",
   "sellerUrl": "https://www.amazon.de/gp/offer-listing/B005CYXNV2"
 }
-```
-
-## Actor expects the file on the input in this structure:
-
-```
-{
-  "maxResults":10,
-  "country":"DE",
-  "keywords": [ "samsung monitor 27", "Iphone XR" ],
-  "liveView": true,
-  "apifyProxyGroups": ["RESIDENTIAL"], //optional
-  "asins": [{ // this is additional feature
-      "asin":"B07JG7DS1T",
-      "countries":["de","it","es","gb","us","fr","in","ca"]
-  }]
-}
-
 ```

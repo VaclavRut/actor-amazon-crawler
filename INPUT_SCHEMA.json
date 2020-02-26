@@ -51,7 +51,7 @@
       "directUrls": {
           "title": "Direct urls",
           "type": "array",
-          "description": "Array of request objects, that you neeed to scrape. Fill as many attributes as possible. Available labels are seller, detail",
+          "description": "Array of request objects, that you neeed to scrape. Fill as many attributes as possible. Available labels are seller",
           "prefill": [{
               "url": "https://www.amazon.de/gp/offer-listing/B07XRR7N5V/",
               "userData": {
