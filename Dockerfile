@@ -1,38 +1,35 @@
-# Image is based on Node.js 10.X
-FROM node:12-alpine
+# Dockerfile contains instructions how to build a Docker image that will contain
+# all the code and configuration needed to run your actor. For a full
+# Dockerfile reference, see https://docs.docker.com/engine/reference/builder/
 
-LABEL maintainer="support@apify.com" Description="Base image for simple Apify actors"
+# First, specify the base Docker image. Apify provides the following base images
+# for your convenience:
+#  apify/actor-node-basic (Node.js 10 on Alpine Linux, small and fast image)
+#  apify/actor-node-chrome (Node.js 10 + Chrome on Debian)
+#  apify/actor-node-chrome-xvfb (Node.js 10 + Chrome + Xvfb on Debian)
+# For more information, see https://apify.com/docs/actor#base-images
+# Note that you can use any other image from Docker Hub.
+FROM apify/actor-node-basic
 
-# Remove yarn, it's not needed
-RUN rm -rf /opt/yarn /usr/local/bin/yarn /usr/local/bin/yarnpkg
+# Second, copy just package.json and package-lock.json since they are the only files
+# that affect NPM install in the next step
+COPY package*.json ./
 
-# Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-
-# Copy source code
-COPY package.json main.js /usr/src/app/
-
-# Install default dependencies, print versions of everything
+# Install NPM packages, skip optional and development dependencies to keep the
+# image small. Avoid logging too much and print the dependency tree for debugging
 RUN npm --quiet set progress=false \
- && npm install --only=prod --no-optional --no-package-lock \
+ && npm install --only=prod --no-optional \
  && echo "Installed NPM packages:" \
- && (npm list || true) \
+ && npm list \
  && echo "Node.js version:" \
  && node --version \
  && echo "NPM version:" \
  && npm --version
 
-# Tell Node.js this is a production environemnt
-ENV NODE_ENV=production
+# Next, copy the remaining files and directories with the source code.
+# Since we do this after NPM install, quick build will be really fast
+# for simple source file changes.
+COPY . ./
 
-# Enable Node.js process to use a lot of memory (actor has limit of 32GB)
-# Increases default size of headers. The original limit was 80kb, but from node 10+ they decided to lower it to 8kb.
-# However they did not think about all the sites there with large headers,
-# so we put back the old limit of 80kb, which seems to work just fine.
-ENV NODE_OPTIONS="--max_old_space_size=30000 --max-http-header-size=80000"
-
-# NOTEs:
-# - This needs to be compatible with CLI.
-# - Using CMD instead of ENTRYPOINT, to allow manual overriding
+# Specify how to run the source code
 CMD npm start
