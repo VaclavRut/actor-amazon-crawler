@@ -45,7 +45,7 @@ Here is a sample object:
           }
 ```
 
-You can use labels seller, we don't visit details now, but let me know if you want to add this feature.
+You can use labels seller, we don't visit details now, but let me know if you want to add this feature (there is issue, so add there comment).
 ##### Additional options
 LiveView - If you choose to enable the LiveView (or specify it in the input manually) it will enable you to view what is happening in the crawler, but it will slow down the actor
 
