@@ -36,7 +36,7 @@
       "type": "string",
       "description": "Keywords you would like to extract from Amazon, comma separated",
       "prefill": "Iphone X,Samsung monitor 27 QHD",
-      "editor": "json"
+      "editor": "textarea"
     },
     "asins": {
       "title": "ASINs to extract",
