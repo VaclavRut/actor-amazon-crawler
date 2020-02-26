@@ -35,7 +35,7 @@
       "title": "Keywords to search",
       "type": "string",
       "description": "Keywords you would like to extract from Amazon, comma separated",
-      "prefill": ["Iphone X", "Samsung monitor 27 QHD"],
+      "prefill": "Iphone X,Samsung monitor 27 QHD",
       "editor": "json"
     },
     "asins": {
