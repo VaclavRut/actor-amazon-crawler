@@ -109,6 +109,9 @@ Apify.main(async () => {
                                 userData: {
                                     label: 'seller',
                                     keyword: request.userData.keyword,
+                                    asin: request.userData.asin,
+                                    detailUrl: request.userData.detailUrl,
+                                    sellerUrl: request.userData.sellerUrl,
                                     sellers: item.sellers,
                                 },
                             }, { forefront: true });
