@@ -1,6 +1,7 @@
 const Apify = require('apify');
 const url = require('url');
 
+const { log } = Apify.utils;
 async function checkSaveCount(datasetId, maxResults) {
     const dataset = await Apify.openDataset(datasetId);
     const { itemCount } = await dataset.getInfo();
@@ -15,7 +16,7 @@ async function checkSaveCount(datasetId, maxResults) {
     return false;
 }
 
-async function saveItem(type, request, item, input, datasetId) {
+async function saveItem(type, request, item, input, datasetId, session) {
     if (type === 'NORESULT') {
         if (input.maxResults) {
             if (await checkSaveCount(datasetId, input.maxResults) === true) {
@@ -24,7 +25,8 @@ async function saveItem(type, request, item, input, datasetId) {
                     keyword: request.userData.keyword,
                 });
             } else {
-                console.log('Finished');
+                await session.sessionPool.persistState()
+                log.info(`We have reached ${input.maxResults} of results and configuration will exit.`);
                 process.exit(0);
             }
         } else {
@@ -38,7 +40,8 @@ async function saveItem(type, request, item, input, datasetId) {
             if (await checkSaveCount(datasetId, input.maxResults) === true) {
                 await Apify.pushData(item);
             } else {
-                console.log('Finished');
+                await session.sessionPool.persistState()
+                log.info(`We have reached ${input.maxResults} of results and configuration will exit.`);
                 process.exit(0);
             }
         } else {
@@ -85,7 +88,7 @@ function getCurrency(request) {
             return 'EUR';
         case 'www.amazon.co.jp':
             return 'JPY';
-        }
+    }
 }
 
 

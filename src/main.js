@@ -46,7 +46,11 @@ Apify.main(async () => {
                 || title.includes('Service Unavailable Error')) {
                 session.retire();
                 log.error('Session blocked, retiring. If you see this for a LONG time, stop the run - you don\'t have any working proxy right now.');
+                // dont makr this request as bad, it is probably looking for working session
+                console.log(request.retryCount);
                 request.retryCount--;
+                // dont retry the request right away, wait a little bit
+                await Apify.utils.sleep(5000);
                 throw new Error();
             }
 
@@ -127,7 +131,7 @@ Apify.main(async () => {
                             }, { forefront: true });
                         } else {
                             log.info(`Saving item url: ${request.url}`);
-                            await saveItem('RESULT', request, item, input, env.defaultDatasetId);
+                            await saveItem('RESULT', request, item, input, env.defaultDatasetId, session);
                         }
                     }
                 } catch (error) {
