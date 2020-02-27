@@ -26,10 +26,13 @@ Apify.main(async () => {
         requestQueue,
         useSessionPool: true,
         sessionPoolOptions: {
-            maxPoolSize: 50,
+            maxPoolSize: 30,
             persistStateKeyValueStoreId: 'amazon-sessions',
+            sessionOptions: {
+                maxUsageCount: 10,
+            },
         },
-        maxConcurrency: input.maxConcurrency || 10,
+        maxConcurrency: input.maxConcurrency || 5,
         maxRequestsPerCrawl: input.maxRequestsPerCrawl || null,
         ...input.proxyConfiguration,
         handlePageTimeoutSecs: 2.5 * 60,
@@ -45,7 +48,8 @@ Apify.main(async () => {
                 || title.includes('Tut uns Leid!')
                 || title.includes('Service Unavailable Error')) {
                 session.retire();
-                log.error('Session blocked, retiring. If you see this for a LONG time, stop the run - you don\'t have any working proxy right now.');
+                log.error('Session blocked, retiring. If you see this for a LONG time, stop the run - you don\'t have any working proxy right now.'
+                    + ' But by default this can happen for some time until we find working session.');
                 // dont makr this request as bad, it is probably looking for working session
                 console.log(request.retryCount);
                 request.retryCount--;
