@@ -7,6 +7,7 @@ const parsePaginationUrl = require('./parsePaginationUrl');
 const { saveItem, getOriginUrl } = require('./utils');
 const detailParser = require('./parseItemDetail');
 
+const { log } = Apify.utils;
 // TODO: Add an option to limit number of results for each keyword
 Apify.main(async () => {
     // Get queue and enqueue first url.
@@ -50,7 +51,7 @@ Apify.main(async () => {
                 // solve pagination if on the page, now support two layouts
                 const enqueuePagination = await parsePaginationUrl($, request);
                 if (enqueuePagination !== false) {
-                    console.log(`Adding new pagination of search ${enqueuePagination}`);
+                    log.info(`Adding new pagination of search ${enqueuePagination}`);
                     await requestQueue.addRequest({
                         url: enqueuePagination,
                         userData: {
@@ -106,7 +107,7 @@ Apify.main(async () => {
 
                         // if there is a pagination, go to another page
                         if (paginationUrlSeller !== false) {
-                            console.log(`Seller detail has pagination, crawling that now -> ${paginationUrlSeller}`);
+                            log.info(`Seller detail has pagination, crawling that now -> ${paginationUrlSeller}`);
                             await requestQueue.addRequest({
                                 url: paginationUrlSeller,
                                 userData: {
@@ -119,7 +120,7 @@ Apify.main(async () => {
                                 },
                             }, { forefront: true });
                         } else {
-                            console.log(`Saving item url: ${request.url}`);
+                            log.info(`Saving item url: ${request.url}`);
                             await saveItem('RESULT', request, item, input, env.defaultDatasetId);
                         }
                     }
@@ -137,7 +138,7 @@ Apify.main(async () => {
                 url: request.url,
                 keyword: request.userData.keyword,
             });
-            console.log(`Request ${request.url} failed 4 times`);
+            log.info(`Request ${request.url} failed 4 times`);
         },
     });
 

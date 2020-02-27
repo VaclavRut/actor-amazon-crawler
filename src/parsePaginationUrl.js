@@ -1,5 +1,7 @@
 /* global $ */
+const Apify = require('apify');
 
+const { log } = Apify.utils;
 function changePageParam(param, request) {
     if (request.url.indexOf('page=') === -1) {
         return `${request.url}&${param}`;
@@ -39,7 +41,7 @@ async function parsePaginationUrl($, request) {
             }
         }
     } catch (error) {
-        console.log('no pagination or unknown layout of page');
+        log.exception(error, 'no pagination or unknown layout of page');
     }
 
     if (pageAttr) return changePageParam(pageAttr, request);

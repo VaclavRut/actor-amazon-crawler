@@ -1,3 +1,7 @@
+const Apify = require('apify');
+
+const { log } = Apify.utils;
+
 function getBaseUrl(country) {
     const baseUrls = {
         US: 'https://www.amazon.com/',
@@ -78,7 +82,7 @@ async function createSearchUrls(input) {
     }
 
     if (urlsToProcess.length !== 0) {
-        console.log(`Going to enqueue ${urlsToProcess.length} requests from input.`);
+        log.info(`Going to enqueue ${urlsToProcess.length} requests from input.`);
         return urlsToProcess;
     }
 

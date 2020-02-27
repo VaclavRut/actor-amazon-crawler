@@ -1,7 +1,10 @@
 // The comment below makes sure that eslint ignores variables from inside
 // of the webpage (eq. $ for jQuery and window)
 /* global $ */
+const Apify = require('apify');
 const { getOriginUrl } = require('./utils');
+
+const { log } = Apify.utils;
 
 async function extractItemDetails($, request) {
     const originUrl = await getOriginUrl(request);
@@ -27,7 +30,7 @@ async function extractItemDetails($, request) {
 
 async function parseItemUrls($, request) {
     const urls = await extractItemDetails($, request);
-    console.log(`Found ${urls.length} on a site, going to crawl them. URL: ${request.url}`);
+    log.info(`Found ${urls.length} on a site, going to crawl them. URL: ${request.url}`);
     return urls;
 }
 

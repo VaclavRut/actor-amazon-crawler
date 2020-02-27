@@ -1,5 +1,7 @@
 const Apify = require('apify');
 
+const { log } = Apify.utils;
+
 async function parseItemDetail($, request, requestQueue) {
     const { sellerUrl, asin, detailUrl } = request.userData;
     const item = {};
@@ -14,6 +16,23 @@ async function parseItemDetail($, request, requestQueue) {
     item.reviewsCount = reviewsConunt;
     item.stars = stars;
     item.details = details;
+    item.images = [];
+    if ($('script:contains("ImageBlockATF")').length !== 0) {
+        const scriptText = $('script:contains("ImageBlockATF")').text();
+        if (scriptText.indexOf("'colorImages':").length !== 0 && scriptText.indexOf("'colorToAsin'").length !== 0 && scriptText.indexOf("{ 'initial': ").length !== 0) {
+            const parsedImageArray = JSON.parse(scriptText.split("'colorImages':")[1].split("'colorToAsin'")[0].trim().replace("{ 'initial': ", '').replace(/}\,$/, ''));
+            for (const image of parsedImageArray) {
+                if (image.hiRes && image.hiRes !== null) {
+                    item.images.push(image.hiRes);
+                } else if (image.large && image.large !== null) {
+                    item.images.push(image.large);
+                } else {
+                    log.info(`Bad image, report to github, please (debug info item url: ${request.url})`);
+                }
+            }
+        }
+    }
+
 
     await requestQueue.addRequest({
         url: sellerUrl,

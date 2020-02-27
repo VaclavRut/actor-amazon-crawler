@@ -9,7 +9,7 @@ function extractInfo($) {
     const images = $('div#olpProductImage img');
     return {
         title: h1.length !== 0 ? h1.text().trim() : null,
-        image: images.length !== 0 ? images.attr('src').replace('_SS160_.', '') : null,
+        thumbnailImage: images.length !== 0 ? images.attr('src').replace('_SS160_.', '') : null,
     };
 }
 function buildSellerUrl(url) {
