@@ -28,10 +28,11 @@ Apify.main(async () => {
         sessionPoolOptions: {
             maxPoolSize: 100,
         },
-        maxConcurrency: input.maxConcurrency || 40,
+        maxConcurrency: input.maxConcurrency || 10,
         maxRequestsPerCrawl: input.maxRequestsPerCrawl || null,
         ...input.proxyConfiguration,
         handlePageTimeoutSecs: 2.5 * 60,
+        persistCookiesPerSession: true,
         handlePageFunction: async ({ $, request, response, session }) => {
             // to handle blocked requests
             const title = $('title').length !== 0 ? $('title').text().trim() : '';
@@ -42,6 +43,7 @@ Apify.main(async () => {
                 || title.includes('Toutes nos excuses')
                 || title.includes('Tut uns Leid!')
                 || title.includes('Service Unavailable Error')) {
+                log.warning('Blocked, retiring sesssion.')
                 session.retire();
             }
 
@@ -133,11 +135,6 @@ Apify.main(async () => {
 
         // If request failed 4 times then this function is executed.
         handleFailedRequestFunction: async ({ request }) => {
-            await Apify.pushData({
-                status: 'Page failed 4 times, check it out, what happened.',
-                url: request.url,
-                keyword: request.userData.keyword,
-            });
             log.info(`Request ${request.url} failed 4 times`);
         },
     });

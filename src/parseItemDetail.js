@@ -43,7 +43,7 @@ async function parseItemDetail($, request, requestQueue) {
             itemDetail: item,
             label: 'seller',
         },
-    });
+    },{ forefront: true });
 }
 
 module.exports = parseItemDetail;
