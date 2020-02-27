@@ -98,13 +98,14 @@ async function parseSellerDetail($, request) {
     } else {
         item.sellers = sellers;
     }
-    const { keyword, asin, detailUrl, sellerUrl, country } = request.userData;
+    const { keyword, asin, detailUrl, sellerUrl, country, itemDetail } = request.userData;
     item.keyword = keyword;
     item.asin = asin;
     item.itemDetailUrl = detailUrl;
     item.sellerOffersUrl = sellerUrl;
     item.country = country;
     item.currency = currency;
+    item.itemDetail = itemDetail;
     if (item.title === null) {
         item.status = 'This ASIN is not available for this country.';
     }

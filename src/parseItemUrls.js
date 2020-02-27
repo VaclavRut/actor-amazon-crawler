@@ -3,7 +3,7 @@
 /* global $ */
 const { getOriginUrl } = require('./utils');
 
-async function extractSellers($, request) {
+async function extractItemDetails($, request) {
     const originUrl = await getOriginUrl(request);
     const itemUrls = [];
     const items = $('.s-result-list [data-asin]');
@@ -11,11 +11,12 @@ async function extractSellers($, request) {
         items.each(function () {
             const asin = $(this).attr('data-asin');
             const sellerUrl = `${originUrl}/gp/offer-listing/${asin}`;
+            const itemUrl = `${originUrl}/dp/${asin}`;
             if (asin) {
                 itemUrls.push({
-                    url: sellerUrl,
+                    url: itemUrl,
                     asin,
-                    detailUrl: `${originUrl}/dp/${asin}`,
+                    detailUrl: itemUrl,
                     sellerUrl,
                 });
             }
@@ -25,9 +26,9 @@ async function extractSellers($, request) {
 }
 
 async function parseItemUrls($, request) {
-    const urls = await extractSellers($, request);
-    console.log(`Found ${urls.length} on a site, going to crawl them.`);
+    const urls = await extractItemDetails($, request);
+    console.log(`Found ${urls.length} on a site, going to crawl them. URL: ${request.url}`);
     return urls;
 }
 
-module.exports = parseItemUrls;
+module.exports = { parseItemUrls };

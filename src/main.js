@@ -2,9 +2,10 @@
 const Apify = require('apify');
 const createSearchUrls = require('./createSearchUrls');
 const parseSellerDetail = require('./parseSellerDetail');
-const parseItemUrls = require('./parseItemUrls');
+const { parseItemUrls } = require('./parseItemUrls');
 const parsePaginationUrl = require('./parsePaginationUrl');
 const { saveItem, getOriginUrl } = require('./utils');
+const detailParser = require('./parseItemDetail');
 
 // TODO: Add an option to limit number of results for each keyword
 Apify.main(async () => {
@@ -65,7 +66,7 @@ Apify.main(async () => {
                         await requestQueue.addRequest({
                             url: item.url,
                             userData: {
-                                label: 'seller',
+                                label: 'detail',
                                 keyword: request.userData.keyword,
                                 asin: item.asin,
                                 detailUrl: item.detailUrl,
@@ -89,6 +90,8 @@ Apify.main(async () => {
                     });
                 }
                 // extract info about item and about seller offers
+            } else if (request.userData.label === 'detail') {
+                await detailParser($, request, requestQueue);
             } else if (request.userData.label === 'seller') {
                 try {
                     const item = await parseSellerDetail($, request);
@@ -118,7 +121,6 @@ Apify.main(async () => {
                         } else {
                             console.log(`Saving item url: ${request.url}`);
                             await saveItem('RESULT', request, item, input, env.defaultDatasetId);
-                            // await Apify.pushData(item);
                         }
                     }
                 } catch (error) {
