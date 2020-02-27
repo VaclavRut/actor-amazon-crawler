@@ -52,11 +52,11 @@ async function createSearchUrls(input) {
     if (input.keywords) {
         searchUrlBase = getBaseUrl(input.country);
         if (input.keywords.length !== 0) {
-            if (input.keywords.indexOf(',') !== -1) {
+            if (input.keywords.indexOf(',').length !== -1) {
                 const keywords = input.keywords.split(',');
                 for (const keyword of keywords) {
                     urlsToProcess.push({
-                        url: `${searchUrlBase}s?k=${keyword.replace(/\\s/g, '+').trim()}`,
+                        url: `${searchUrlBase}s?k=${keyword.replace(/\s+/g, '+').trim()}`,
                         userData: {
                             label: 'page',
                             keyword,
@@ -65,7 +65,7 @@ async function createSearchUrls(input) {
                 }
             } else {
                 urlsToProcess.push({
-                    url: `${searchUrlBase}s?k=${input.keywords.replace(/\\s/g, '+').trim()}`,
+                    url: `${searchUrlBase}s?k=${input.keywords.replace(/\s+/g, '+').trim()}`,
                     userData: {
                         label: 'page',
                         keyword: input.keywords,
