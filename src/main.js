@@ -26,7 +26,7 @@ Apify.main(async () => {
         requestQueue,
         useSessionPool: true,
         sessionPoolOptions: {
-            maxPoolSize: 100,
+            maxPoolSize: 20,
         },
         maxConcurrency: input.maxConcurrency || 10,
         maxRequestsPerCrawl: input.maxRequestsPerCrawl || null,
@@ -43,8 +43,9 @@ Apify.main(async () => {
                 || title.includes('Toutes nos excuses')
                 || title.includes('Tut uns Leid!')
                 || title.includes('Service Unavailable Error')) {
-                log.warning('Blocked, retiring sesssion.')
                 session.retire();
+                log.error('Session blocked, retiring.');
+                throw new Error();
             }
 
             const urlOrigin = await getOriginUrl(request);
