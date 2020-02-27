@@ -115,6 +115,7 @@ Apify.main(async () => {
                                 url: paginationUrlSeller,
                                 userData: {
                                     label: 'seller',
+                                    itemDetail: request.userData.itemDetail,
                                     keyword: request.userData.keyword,
                                     asin: request.userData.asin,
                                     detailUrl: request.userData.detailUrl,

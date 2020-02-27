@@ -9,8 +9,22 @@ async function parseItemDetail($, request, requestQueue) {
     const stars = $('.reviewCountTextLinkedHistogram').length !== 0 ? $('.reviewCountTextLinkedHistogram').attr('title').match(/(\d+\.\d+)|\d+/)[0] : null;
     const details = {};
     $('table.prodDetTable tr').each(function () {
-        details[$(this).find('th').text().trim()] = $(this).find('td').text().trim();
+        if ($(this).find('th').text().trim() !== '') {
+            details[$(this).find('th').text().trim()] = $(this).find('td').text().trim();
+        }
     });
+
+    if ($('.DElocale table').length !== 0) {
+        $('.DElocale table tr').each(function () {
+            if ($(this).find('td').eq(0).text()
+                .trim() !== '') {
+                details[$(this).find('td').eq(0).text()
+                    .trim()] = $(this).find('td').eq(1).text()
+                    .trim();
+            }
+        });
+    }
+
     item.featureDesc = $('#featurebullets_feature_div').length !== 0 ? $('#featurebullets_feature_div').text().trim() : null;
     item.desc = $('#productDescription').length !== 0 ? $('#productDescription').text().trim() : null;
     item.reviewsCount = reviewsConunt;
@@ -33,7 +47,6 @@ async function parseItemDetail($, request, requestQueue) {
         }
     }
 
-
     await requestQueue.addRequest({
         url: sellerUrl,
         userData: {
@@ -43,7 +56,7 @@ async function parseItemDetail($, request, requestQueue) {
             itemDetail: item,
             label: 'seller',
         },
-    },{ forefront: true });
+    }, { forefront: true });
 }
 
 module.exports = parseItemDetail;

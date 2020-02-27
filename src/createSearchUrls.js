@@ -26,7 +26,7 @@ async function createSearchUrls(input) {
     if (!input.country) {
         throw new Error('Country required');
     }
-    if ((!input.keywords) && (!input.asins && !input.asins.length) && (!input.directUrls && !input.directUrls.length)) {
+    if ((!input.keywords) && (!input.asins) && (!input.directUrls)) {
         throw new Error('Keywords/Asins required');
     }
 
