@@ -26,7 +26,8 @@ Apify.main(async () => {
         requestQueue,
         useSessionPool: true,
         sessionPoolOptions: {
-            maxPoolSize: 20,
+            maxPoolSize: 50,
+            persistStateKeyValueStoreId: 'amazon-sessions',
         },
         maxConcurrency: input.maxConcurrency || 10,
         maxRequestsPerCrawl: input.maxRequestsPerCrawl || null,
@@ -44,7 +45,8 @@ Apify.main(async () => {
                 || title.includes('Tut uns Leid!')
                 || title.includes('Service Unavailable Error')) {
                 session.retire();
-                log.error('Session blocked, retiring.');
+                log.error('Session blocked, retiring. If you see this for a LONG time, stop the run - you don\'t have any working proxy right now.');
+                request.retryCount--;
                 throw new Error();
             }
 
