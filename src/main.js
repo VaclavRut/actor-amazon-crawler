@@ -1,11 +1,13 @@
 /* global $, window */
 const Apify = require('apify');
+const cheerio = require('cheerio');
 const createSearchUrls = require('./createSearchUrls');
 const parseSellerDetail = require('./parseSellerDetail');
 const { parseItemUrls } = require('./parseItemUrls');
 const parsePaginationUrl = require('./parsePaginationUrl');
 const { saveItem, getOriginUrl } = require('./utils');
 const detailParser = require('./parseItemDetail');
+const CloudFlareUnBlocker = require('./unblocker');
 
 const { log } = Apify.utils;
 // TODO: Add an option to limit number of results for each keyword
@@ -21,8 +23,13 @@ Apify.main(async () => {
         await requestQueue.addRequest(searchUrl);
     }
 
+    const proxyConfiguration = { ...input.proxy };
+    const cloudFlareUnBlocker = new CloudFlareUnBlocker({
+        proxyConfiguration,
+    });
+
     // Create crawler.
-    const crawler = new Apify.CheerioCrawler({
+    const crawler = new Apify.BasicCrawler({
         requestQueue,
         useSessionPool: true,
         sessionPoolOptions: {
@@ -34,13 +41,14 @@ Apify.main(async () => {
         },
         maxConcurrency: input.maxConcurrency || 5,
         maxRequestsPerCrawl: input.maxRequestsPerCrawl || null,
-        ...input.proxyConfiguration,
         handlePageTimeoutSecs: 2.5 * 60,
         persistCookiesPerSession: true,
-        handlePageFunction: async ({ $, request, response, session }) => {
+        handleRequestFunction: async ({ request, session }) => {
+            const responseRequest = await cloudFlareUnBlocker.unblock({ request, session });
+            const $ = cheerio.load(responseRequest.body);
             // to handle blocked requests
             const title = $('title').length !== 0 ? $('title').text().trim() : '';
-            const { statusCode } = response;
+            const { statusCode } = responseRequest;
             if (statusCode !== 200
                 || title.includes('Robot Check')
                 || title.includes('CAPTCHA')
@@ -48,14 +56,12 @@ Apify.main(async () => {
                 || title.includes('Tut uns Leid!')
                 || title.includes('Service Unavailable Error')) {
                 session.retire();
-                log.error('Session blocked, retiring. If you see this for a LONG time, stop the run - you don\'t have any working proxy right now.'
-                    + ' But by default this can happen for some time until we find working session.');
-                // dont makr this request as bad, it is probably looking for working session
-                console.log(request.retryCount);
+                // dont mark this request as bad, it is probably looking for working session
                 request.retryCount--;
                 // dont retry the request right away, wait a little bit
                 await Apify.utils.sleep(5000);
-                throw new Error();
+                throw new Error('Session blocked, retiring. If you see this for a LONG time, stop the run - you don\'t have any working proxy right now.'
+                    + ' But by default this can happen for some time until we find working session.');
             }
 
             const urlOrigin = await getOriginUrl(request);
@@ -105,7 +111,11 @@ Apify.main(async () => {
                 }
                 // extract info about item and about seller offers
             } else if (request.userData.label === 'detail') {
-                await detailParser($, request, requestQueue);
+                try {
+                    await detailParser($, request, requestQueue);
+                } catch (e) {
+                    log.error('Detail parsing failed', e);
+                }
             } else if (request.userData.label === 'seller') {
                 try {
                     const item = await parseSellerDetail($, request);
@@ -148,6 +158,7 @@ Apify.main(async () => {
         // If request failed 4 times then this function is executed.
         handleFailedRequestFunction: async ({ request }) => {
             log.info(`Request ${request.url} failed 4 times`);
+            await Apify.setValue(`bug_${Math.random()}.html`, $('body').html(), { contentType: 'text/html' });
         },
     });
 

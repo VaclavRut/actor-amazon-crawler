@@ -5,6 +5,7 @@
 	"main": "main.js",
 	"dependencies": {
 		"apify": "^0.19.1",
+		"cheerio": "^1.0.0-rc.3",
 		"parse-price": "^1.1.8",
 		"query-string": "^6.8.1",
 		"request-promise": "^4.2.4",

@@ -32,9 +32,12 @@ async function parseItemDetail($, request, requestQueue) {
     item.details = details;
     item.images = [];
     if ($('script:contains("ImageBlockATF")').length !== 0) {
-        const scriptText = $('script:contains("ImageBlockATF")').text();
-        if (scriptText.indexOf("'colorImages':").length !== 0 && scriptText.indexOf("'colorToAsin'").length !== 0 && scriptText.indexOf("{ 'initial': ").length !== 0) {
-            const parsedImageArray = JSON.parse(scriptText.split("'colorImages':")[1].split("'colorToAsin'")[0].trim().replace("{ 'initial': ", '').replace(/}\,$/, ''));
+        const scriptText = $('script:contains("ImageBlockATF")').html();
+        if (scriptText.indexOf("'colorImages':").length !== 0
+            && scriptText.indexOf("'colorToAsin'").length !== 0
+            && scriptText.indexOf("'initial': ").length !== 0) {
+            const textParse = scriptText.split("'colorImages':")[1].split("'colorToAsin'")[0].trim().replace("'initial': ", '').replace(/(},$|^{)/g, '');
+            const parsedImageArray = JSON.parse(textParse);
             for (const image of parsedImageArray) {
                 if (image.hiRes && image.hiRes !== null) {
                     item.images.push(image.hiRes);
