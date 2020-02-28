@@ -73,7 +73,7 @@ Configuration then extracts all seller offers for a given keyword, so if there i
 }
 ```
 
-##### Asin crawling
+### Asin crawling
 One of the features is to get price offers for a list of ASINs, if this what you need, you can specify the ASINs on the input with combination of countries to get results for.
 Keep in mind that if you specify asins on the input, keywords search will be skipped, those functions can't be combined in one run.
 ```
@@ -83,7 +83,7 @@ Keep in mind that if you specify asins on the input, keywords search will be ski
   }]
 ```
 With this setup, we will check for all countries whether there is that ASIN available and get all seller offers for that.
-##### Direct urls crawling
+### Direct urls crawling
 If you are more advanced and you have your ASINs already and don't want to crawl them manually, you can enqueue the requests from the input.
 Here is a sample object to get itemDetail info:
 ```
@@ -111,11 +111,9 @@ Here is a sample object to get seller info:
               }
           }
 ```
-##### Additional options
+### Additional options
 maxResults - If you want to limit number of results to extract, set this value with number of results, otherwise keep it blank or 0. It doesn't work 100% precisely, that if you put there 5 results, it will create more of the records because of the concurrency.
 
-#### Proxy
+## Proxy
 For proper function of the actor are proxies required, it is not recommended to run it on a free account for more than sample of results.
-By default is using this configuration all proxies that you have access to, but if you are on the free plan, number of the proxies is very limited.
-
-If you have purchased a residential proxy, you can specify it on the input, also you can specify just some proxy groups if it is your desire.
+If you plan to run it for more then couple results, subscribe to Apify platform to have access to large pool of proxies.
