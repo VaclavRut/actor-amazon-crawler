@@ -36,7 +36,7 @@ Apify.main(async () => {
             maxPoolSize: 30,
             persistStateKeyValueStoreId: 'amazon-sessions',
             sessionOptions: {
-                maxUsageCount: 10,
+                maxUsageCount: 50,
             },
         },
         maxConcurrency: input.maxConcurrency || 5,
