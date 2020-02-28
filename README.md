@@ -104,15 +104,15 @@ Here is a sample object to get itemDetail info:
 Here is a sample object to get seller info:
 ```
 {
-              "url": "https://www.amazon.de/gp/offer-listing/B07XRR7N5V/",
-              "userData": {
-                  "label": "seller",
-                  "asin": "B07XRR7N5V",
-                  "detailUrl": "https://www.amazon.de/dp/B07XRR7N5V/",
-                  "sellerUrl": "https://www.amazon.de/gp/offer-listing/B07XRR7N5V/",
-                  "country": "DE"
-              }
-          }
+  "url": "https://www.amazon.de/gp/offer-listing/B07XRR7N5V/",
+  "userData": {
+      "label": "seller",
+      "asin": "B07XRR7N5V",
+      "detailUrl": "https://www.amazon.de/dp/B07XRR7N5V/",
+      "sellerUrl": "https://www.amazon.de/gp/offer-listing/B07XRR7N5V/",
+      "country": "DE"
+  }
+}
 ```
 ### Additional options
 maxResults - If you want to limit number of results to extract, set this value with number of results, otherwise keep it blank or 0. It doesn't work 100% precisely, that if you put there 5 results, it will create more of the records because of the concurrency.
