@@ -72,6 +72,9 @@ Configuration then extracts all seller offers for a given keyword, so if there i
   }
 }
 ```
+## Proxy
+For proper function of the actor are proxies required, it is not recommended to run it on a free account for more than sample of results.
+If you plan to run it for more then couple results, subscribe to Apify platform to have access to large pool of proxies.
 
 ### Asin crawling
 One of the features is to get price offers for a list of ASINs, if this what you need, you can specify the ASINs on the input with combination of countries to get results for.
@@ -113,7 +116,3 @@ Here is a sample object to get seller info:
 ```
 ### Additional options
 maxResults - If you want to limit number of results to extract, set this value with number of results, otherwise keep it blank or 0. It doesn't work 100% precisely, that if you put there 5 results, it will create more of the records because of the concurrency.
-
-## Proxy
-For proper function of the actor are proxies required, it is not recommended to run it on a free account for more than sample of results.
-If you plan to run it for more then couple results, subscribe to Apify platform to have access to large pool of proxies.
