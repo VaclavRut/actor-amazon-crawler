@@ -14,6 +14,7 @@ Now we support these countries:
 * IN - https://www.amazon.in
 * CA - https://www.amazon.ca
 * JP - https://www.amazon.co.jp
+* AE - https://www.amazon.ae
 
 If you want to add another country, contact us.
 
@@ -22,52 +23,200 @@ Configuration then extracts all seller offers for a given keyword, so if there i
 ## Sample result
 ```
 {
-  "title": "GoPro HERO8 Black + PNY Elite-X 128GB U3 microSDHC Card (Bundle)",
-  "thumbnailImage": "https://images-na.ssl-images-amazon.com/images/I/31fbysMcYFL.jpg",
+  "title": "Samsung SE450 Series 27 inch FHD 1920x1080 Desktop Monitor for Business, DVI, VGA, DisplayPort, VESA mountable, 3-Year Warranty, TAA (S27E450D)",
+  "thumbnailImage": "https://images-na.ssl-images-amazon.com/images/I/51kKM4aZ+WL.jpg",
   "sellers": [
     {
-      "price": "$399.99",
-      "priceParsed": 399.99,
-      "condition": "New",
-      "sellerName": "TTP Retail",
+      "price": "$174.99",
+      "priceParsed": 174.99,
+      "condition": "Used - Like New",
+      "sellerName": "Luigi & Co. LLC",
       "prime": true,
       "shippingInfo": "",
-      "shopUrl": "www.amazon.com/gp/aag/main/ref=olp_merch_name_1/131-4745621-4725555/?seller=ANIVUW1SREVVT",
+      "shopUrl": "www.amazon.com/gp/aag/main/ref=olp_merch_name_1/?seller=AP5WUUVHWNT7",
+      "pricePerUnit": null
+    },
+    {
+      "price": "$208.50",
+      "priceParsed": 208.5,
+      "condition": "New",
+      "sellerName": "Scatterlings Store",
+      "prime": true,
+      "shippingInfo": "",
+      "shopUrl": "www.amazon.com/gp/aag/main/ref=olp_merch_name_2/?seller=A42717TRWCXE4",
+      "pricePerUnit": null
+    },
+    {
+      "price": "$209.00",
+      "priceParsed": 209,
+      "condition": "New",
+      "sellerName": "Amazon.com",
+      "prime": true,
+      "shippingInfo": "",
+      "shopUrl": "www.amazon.com",
+      "pricePerUnit": null
+    },
+    {
+      "price": "$257.63",
+      "priceParsed": 257.63,
+      "condition": "New",
+      "sellerName": "Triplenet Pricing INC",
+      "prime": false,
+      "shippingInfo": "",
+      "shopUrl": "www.amazon.com/gp/aag/main/ref=olp_merch_name_4/?seller=AAZRLVTNON75Z",
+      "pricePerUnit": null
+    },
+    {
+      "price": "$249.00",
+      "priceParsed": 249,
+      "condition": "New",
+      "sellerName": "Aventis Systems",
+      "prime": false,
+      "shippingInfo": "",
+      "shopUrl": "www.amazon.com/gp/aag/main/ref=olp_merch_name_5/?seller=A1PUHO6D4MM5FC",
+      "pricePerUnit": null
+    },
+    {
+      "price": "$253.73",
+      "priceParsed": 253.73,
+      "condition": "New",
+      "sellerName": "Hot Deals 4 Less®",
+      "prime": false,
+      "shippingInfo": "",
+      "shopUrl": "www.amazon.com/gp/aag/main/ref=olp_merch_name_6/?seller=A1YAK8U7QV5H1E",
+      "pricePerUnit": null
+    },
+    {
+      "price": "$217.81",
+      "priceParsed": 217.81,
+      "condition": "New",
+      "sellerName": "OneDealOutlet Online",
+      "prime": false,
+      "shippingInfo": "",
+      "shopUrl": "www.amazon.com/gp/aag/main/ref=olp_merch_name_7/?seller=A4UCFL9LU89NR",
       "pricePerUnit": null
     }
   ],
-  "asin": "B07XZMHTL5",
-  "itemDetailUrl": "https://www.amazon.com/dp/B07XZMHTL5",
-  "sellerOffersUrl": "https://www.amazon.com/gp/offer-listing/B07XZMHTL5",
+  "asin": "B010N07D4W",
+  "itemDetailUrl": "https://www.amazon.com/dp/B010N07D4W",
+  "sellerOffersUrl": "https://www.amazon.com/gp/offer-listing/B010N07D4W",
   "currency": "USD",
   "itemDetail": {
-    "featureDesc": "BUNDLE: GoPro HERO8 Black Camera + PNY Elite-X 128GB microSDHC Card with Adapter-UHS-I, U3\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t \n\t\t\t\t\t\t\tSTREAMLINED DESIGN - The re-imagined shape is more pocketable, and folding fingers at the base let you swap mounts quickly. A new side door makes changing batteries even faster, and the lens is now 2x more impact-resistant.\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t \n\t\t\t\t\t\t\tHERO8 BLACK MODS - Vloggers, pro filmmakers and aspiring creators can do more than ever imagined – with quick-loading accessories like flashes, microphones, LCD screens and more. Just add the optional Media Mod to up your capture game.\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t \n\t\t\t\t\t\t\tHYPERSMOOTH 2.0 - Smooth just got smoother. Now HERO8 Black has three levels of stabilisation – On, High and Boost – so you can pick the best option for whatever you do. Get the widest views possible, or boost it up to the smoothest video ever offered in a HERO camera. Plus, HyperSmooth works with all resolutions and frame rates, and features in-app horizon levelling.\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t \n\t\t\t\t\t\t\tTIMEWARP 2.0 - Capture super-stabilised time lapse videos while you move through an activity. And now, TimeWarp automatically adjusts speed based on motion, scene detection and lighting. You can even slow down the effect to real time – savouring interesting moments – and then tap to speed it back up.\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n                \n                 \t\n               \n               \n\t\t\t\n\t\t\t\n\t\t\n\n\t\t\n\n\t\t\n\t\t\t\n\t\t\t›\n\t\t\tSee more product details",
-    "desc": "Color:Hero8 + 128GB SD Card\n            \n          \n          \n        \n      \n    \n  \n\n\n        \n        \n     \n\t       \n     \n\n     \n                              \n     \n       \n        \n         \n        \n        \t\n        \t\n        \t\t\n        \t\t\tThis is HERO8 Black – the most versatile, unshakable HERO camera ever. A streamlined design makes it more pocketable than ever, and swapping mounts takes just seconds thanks to built-in folding fingers. FEATURES & BENEFITS:  LIVEBURST - Record the moments 1.5 seconds before and after your shot SUPERPHOTO + HDR - Capture killer 12-MP photos with improved HDR with reduced blur and serious detail, even in low-light areas. NIGHT LAPSE VIDEO - Capture amazing time lapse videos at night in 4K, 2.7K 4:3, 1440p or 1080p, all processed in-camera. DIGITAL LENSES - Now you can toggle between Narrow, Linear, Wide and SuperView.  LIVE STREAMING IN 1080P VOICE CONTROL - Go hands-free with 14 voice commands  ADVANCED WIND-NOISE REDUCTION - New front mic location and improved algorithms that actively filter out wind noise. RAW IN ALL PHOTO MODES - now available for time lapse and burst photos.  PRESETS - Presets for Standard, Activity, Cinematic and Slo-Mo shots.  PORTRAIT ORIENTATION - Capture photos and videos in portrait orientation – perfect for your Snapchat and Instagram Stories. RUGGED + WATERPROOF - Share experiences you can’t capture with your phone. HERO8 Black is rugged, waterproof to 10 m and down for adventure. PRO-QUALITY 4K60 + 1080P240 VIDEO - Stunning video resolution, impressive frame rates and super slo-mo combine with HyperSmooth stabilization. 8X SLO-MO - Ultra-high frame rate 1080p240 video – with HyperSmooth 2.0 stabilisation – allows up to 8x slow motion to relive epic moments in all their glory. 100-MBPS BIT RATE - Record studio-quality footage with bit rate options of up to 100 Mbps. GPS + MOTION SENSORS - GPS captures your location, altitude and speed.  FACE, SMILE, BLINK + SCENE DETECTION - HERO8 Black knows when you face the camera, smile, blink and more.",
-    "reviewsCount": "118 ratings",
-    "stars": "4.2",
+    "InStock": true,
+    "delivery": "Arrives:  July 30 - Aug 14",
+    "featureDesc": "About this item\n\n\n\n\n\n\n\n\n\nThis fits your .\n\n\n\n\n\n Make sure this fits\nby entering your model number.\n\n\n\n\n\n\n\n27-inch 16:9 FHD 1920 x 1200 resolution, LED-backlit LCD screen delivers bright, sharp images with a low-glare TN panel and MagicAngle technology providing a comfortable wide-angle viewing experience\n\n\n\n\nVersatile connectivity options including VGA, DVI, and DisplayPort 1.2 inputs\n\n\n\n\nVESA compatibility enables easy mounting to a wall or monitor stand, along with a fully adjustable stand included with height, tilt, swivel, and pivot features\n\n\n\n\nEye Saver Mode and Flicker-Free technology help minimize eye strain during long working hours\n\n\n\n\n3-Year Business Warranty with extended warranties available for purchase, TAA Compliant for Federal Government Customers",
+    "desc": "The Samsung S27E450D 27” desktop business monitor offers the ideal balance between value and features for everyday business use. Offering impressive picture quality at an accessible price point, this business desktop monitor excels across a variety of commercial applications. The Full HD 1920 x 1080 LED low-glare TN panel displays a sharp, bright, and beautiful image, while Mega infinity dynamic contrast ratio ensures subtle detail even in lighter and darker areas of the picture. The monitor is also made with up to 30% recycled plastic, and with a low-energy consumption of less than 0.005W in standby, and true 0W in off mode, the S27E450D is ideal for eco-conscious businesses looking to reduce their carbon footprint and save on energy costs. Additionally, users can adjust the monitor for their ideal ergonomic comfort with the fully adjustable stand including height, tilt, swivel and pivot feature, which lets you use the monitor in portrait mode, or mount the monitor on any VESA compatible mount or stand. To top it off, your investment is secured with a 3-year business warranty.",
+    "breadCrumbs": "Electronics›Computers & Accessories›Monitors",
+    "NumberOfQuestions": 7,
+    "reviewsCount": "21 ratings",
+    "stars": "3.7",
     "details": {
-      "Brand Name": "GoPro",
-      "Item Weight": "1.1 pounds",
-      "Product Dimensions": "1.9 x 1.1 x 2.6 inches",
-      "Item model number": "CHDXX-712",
-      "Batteries": "1 Lithium ion batteries required. (included)",
-      "Color Name": "Hero8 + 128GB SD Card",
-      "ASIN": "B07XZMHTL5",
-      "Customer Reviews": "/* \n    * Fix for UDP-1061. Average customer reviews has a small extra line on hover \n    * https://omni-grok.amazon.com/xref/src/appgroup/websiteTemplates/retail/SoftlinesDetailPageAssets/udp-intl-lock/src/legacy.css?indexName=WebsiteTemplates#40\n    */\n    .noUnderline a:hover { \n        text-decoration: none; \n    }\n\n\n\n\n    \n    \n    \n    \n        \n\n        \n\n        \n        \n        \n        \n\t\t\n\t\t\n\t\t\n\t\t\n\t\t        \n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t        \n        \n\n        \n            \n            \n            \n                \n                \n                    \n                        \n                        \n                            \n\n\n\n\n\n\n\n        \n            \n\n\n\n\n\n    \n        \n            \n                \n\n4.2 out of 5 stars\n                \n            \n        \n        \n    \n\n\n        \n        \n        \n        \n\n        \n\n        \n\n        \n        \n        \n        \n\n        \n        \n        \n        \n            \n            \n                \n                    \n                        118 ratings\n                    \n                \n            \n                \n                    P.when('A', 'ready').execute(function(A) {\n                        A.declarative('acrLink-click-metrics', 'click', { \"allowLinkDefault\" : true }, function(event){\n                            if(window.ue) {\n                                ue.count(\"acrLinkClickCount\", (ue.count(\"acrLinkClickCount\") || 0) + 1);\n                            }\n                        });\n                    });\n                \n            \n            \n            \n            \n        \n        \n        \n            P.when('A', 'cf').execute(function(A) {\n                A.declarative('acrStarsLink-click-metrics', 'click', { \"allowLinkDefault\" : true },  function(event){\n                    if(window.ue) {\n                        ue.count(\"acrStarsLinkWithPopoverClickCount\", (ue.count(\"acrStarsLinkWithPopoverClickCount\") || 0) + 1);\n                    }\n                });\n            });\n        \n\n\n                        \n                    \n                \n            \n        \n    \n\n\n  4.2 out of 5 stars",
-      "Best Sellers Rank": "#18,706 in Electronics (See Top 100 in Electronics)\n        \n              \n                #122 in Sports & Action Video Cameras",
-      "Shipping Weight": "1.1 pounds (View shipping rates and policies)",
-      "Date First Available": "October 1, 2019"
+      "Standing screen display size": "27 Inches",
+      "Max Screen Resolution": "1920 x 1080 Pixels",
+      "Brand": "Samsung Business",
+      "Series": "S27E450D",
+      "Item model number": "LS27E45KDHG/GO",
+      "Item Weight": "13.9 pounds",
+      "Product Dimensions": "25.2 x 8.8 x 15.7 inches",
+      "Item Dimensions  L x W x H": "25.2 x 8.8 x 15.7 inches",
+      "Color": "Black",
+      "Manufacturer": "Samsung",
+      "ASIN": "B010N07D4W",
+      "Is Discontinued By Manufacturer": "No",
+      "Date First Available": "June 30, 2015",
+      "Customer Reviews": "3.7 out of 5 stars\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n21 ratings\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n3.7 out of 5 stars",
+      "Best Sellers Rank": "#22,010 in Electronics (See Top 100 in Electronics)\n\n\n#648 in Computer Monitors"
     },
     "images": [
-      "https://images-na.ssl-images-amazon.com/images/I/51J59KDjkML._AC_SL1429_.jpg",
-      "https://images-na.ssl-images-amazon.com/images/I/61ZFNcSy4jL._AC_SL1500_.jpg",
-      "https://images-na.ssl-images-amazon.com/images/I/41M2lMmip4L._AC_.jpg",
-      "https://images-na.ssl-images-amazon.com/images/I/61MeYsWbiEL._AC_SL1500_.jpg",
-      "https://images-na.ssl-images-amazon.com/images/I/61q%2B0-lHduL._AC_SL1500_.jpg",
-      "https://images-na.ssl-images-amazon.com/images/I/614Yf6ECc-L._AC_SL1500_.jpg",
-      "https://images-na.ssl-images-amazon.com/images/I/61X3Iz9kNYL._AC_SL1500_.jpg",
-      "https://images-na.ssl-images-amazon.com/images/I/71FMDNDDZxL._AC_SL1500_.jpg",
-      "https://images-na.ssl-images-amazon.com/images/I/91-amHuPrLL._AC_SL1500_.jpg"
+      "https://images-na.ssl-images-amazon.com/images/I/91%2BDRhesUGL._AC_SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/81P-%2B%2BINuIL._AC_SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/91WIergLFwL._AC_SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/81Or5w16-DL._AC_SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/81SEgFF5GiL._AC_SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/91jMSIRM08L._AC_SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/61gnj0tv%2BDL._AC_SL1500_.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/31S4T6bcjaL._AC_.jpg"
+    ],
+    "NumberOfReviews": 13,
+    "reviews": [
+      {
+        "userName": "A. J. Kim",
+        "reviewTitle": "Nice replacement for my Samsung 22\"",
+        "reviewedIn": "Reviewed in the United States on May 9, 2017",
+        "reviewDescription": "There are probably much better resolution monitors out there which is why not giving 5-stars, but I bought this monitor for other reasons. I was looking for 27\" monitors that had DVI connector to replace my Samsung 22\" monitors. Surprising, I was having a hard time finding monitors that had DVI connections, most seem to be HDMI, USB, or DisplayPort. This one has a DVI, D-Sub, and DisplayPort. I didn't want a curved monitor. I didn't want speakers in the monitor if at all possible. It was my intention to mount on a monitor arm, so I needed it to have VESA mounting. I didn't care for much of a stand or any frills it might have on it. One big reason I liked this monitor is its has a AC connection with a real power cord and not a DC connection with a power pack that would be sitting on the floor. I like Samsung products. I have several home electronic devices that are Samsung that have been really nice, quality products. If one of my Samsung 22\" monitors hadn't started to flicker when I powered on, I would have kept using them. I probably had them for more than 10yrs. Since one monitor was starting to go bad, I thought maybe it was time to upgrade along with a computer hardware upgrade I'm also planning for in next couple of months."
+      },
+      {
+        "userName": "Michael R",
+        "reviewTitle": "There are better choices",
+        "reviewedIn": "Reviewed in the United States on April 25, 2020",
+        "reviewDescription": "Thick bezel. Color not vivid. Has to be turned on after the computer No sync  Display menu limited. For the price. I liked my Acer better. 60 Hz refresh.  Many connection options. Upon boot, the monitor has trouble finding the correct connection and cycles through the options several times looking for the connection. It turns itself off after a period of not using instead of standby.  The screen is muted in color."
+      },
+      {
+        "userName": "David White",
+        "reviewTitle": "Amazon search sucks",
+        "reviewedIn": "Reviewed in the United States on May 17, 2020",
+        "reviewDescription": "Monitor is fine.  Problem is that when you search Amazon for \"monitor with speakers\", it should be able to show only those.  This monitor DOES NOT have speakers!  Totally frustrating!!!"
+      },
+      {
+        "userName": "Olga Bezgodov",
+        "reviewTitle": "No vga plug",
+        "reviewedIn": "Reviewed in the United States on January 22, 2020",
+        "reviewDescription": "Don’t buy! Doesn’t have a vga plug and no controller and no headphones audio"
+      },
+      {
+        "userName": "Ken Necochea Jr",
+        "reviewTitle": "I had one already and I loved the resolution that I replaced the other dual monitor ...",
+        "reviewedIn": "Reviewed in the United States on January 10, 2018",
+        "reviewDescription": "Quality monitor 9.5 on a scale of 10, and I got it for a smokin' price.  I had one already and I loved the resolution that I replaced the other dual monitor with a twin..."
+      },
+      {
+        "userName": "SMoreHouse",
+        "reviewTitle": "It's Fine",
+        "reviewedIn": "Reviewed in the United States on April 26, 2020",
+        "reviewDescription": "It's fine for my work laptop that happens to have a display port connection but there's no HDMI for any other computer in my house."
+      },
+      {
+        "userName": "Dena",
+        "reviewTitle": "Great",
+        "reviewedIn": "Reviewed in the United States on November 16, 2018",
+        "reviewDescription": "Just what we wanted"
+      },
+      {
+        "userName": "Steve L",
+        "reviewTitle": "Not as described",
+        "reviewedIn": "Reviewed in the United States on April 29, 2020",
+        "reviewDescription": "The picture shows that it has a HDMI port.  The actual unit does not have this, and now I have to buy a $30 adapter.  Amazon- please credit me the cost of the adapter."
+      },
+      {
+        "userName": "Gron",
+        "reviewTitle": "Monitor  was as advertised adver",
+        "reviewedIn": "Reviewed in the United States on March 29, 2020",
+        "reviewDescription": "Monitor  was as advertised adver"
+      },
+      {
+        "userName": "HY",
+        "reviewTitle": "Five Stars",
+        "reviewedIn": "Reviewed in the United States on January 29, 2018",
+        "reviewDescription": "Great monitor at a good price."
+      },
+      {
+        "userName": "Robert B.",
+        "reviewTitle": "Shipped on time and in good condition. It's an upgrade from a 22\" Samsung ...",
+        "reviewedIn": "Reviewed in the United States on October 4, 2016",
+        "reviewDescription": "Shipped on time and in good condition. It's an upgrade from a 22\" Samsung monitor. It is clear, sharp, and the color is good. Had to turn down the brightness which was all the way up when it arrived. The controls are easily accessible and simple to operate. I'd recommend it to anyone."
+      },
+      {
+        "userName": "David Burg",
+        "reviewTitle": "Cheaply built, poor viewing angle, low picture quality",
+        "reviewedIn": "Reviewed in the United States on July 17, 2019",
+        "reviewDescription": "It's a big screen for not much money. But it's cheaply built - the plastic moves and makes cracking sound when you grab the monitor to move it. It has a thick border when many modern monitor feature edge-less build.The viewing angle, especially in portrait orientation is horrid - moving your head a few inches left or right and the color / contrast very visibly changes.I recommend you to get something else than this monitor."
+      },
+      {
+        "userName": "Dr. Aninda Shome",
+        "reviewTitle": "poor resolution, not meant for photographs",
+        "reviewedIn": "Reviewed in the United States on October 10, 2018",
+        "reviewDescription": "low quality resolutionphotos do not show very wellok for regular word and xlscan be used in portrait mode"
+      }
     ]
   }
 }
@@ -78,7 +227,6 @@ If you plan to run it for more then couple results, subscribe to Apify platform 
 
 ### Asin crawling
 One of the features is to get price offers for a list of ASINs, if this what you need, you can specify the ASINs on the input with combination of countries to get results for.
-Keep in mind that if you specify asins on the input, keywords search will be skipped, those functions can't be combined in one run.
 ```
 "asins": [{
       "asin":"B07JG7DS1T",
@@ -116,3 +264,66 @@ Here is a sample object to get seller info:
 ```
 ### Additional options
 maxResults - If you want to limit number of results to extract, set this value with number of results, otherwise keep it blank or 0. It doesn't work 100% precisely, that if you put there 5 results, it will create more of the records because of the concurrency.
+
+### Consumption
+Using Raw requests - 0.0884 CU when extracting 20 results from keyword search
+Using a Browser - 0.6025 CU when extracting 20 results from keyword search
+
+
+## Changelog
+Changes related to the new version
+
+### Added
+- Scraper Type - Type of scraper that can be used to evaluate amazon `Basic Crawler` and a default of `Puppeteer`.
+- Country - Added a new country domain `UAE`.
+- Delivery Location - Spinner to pick location where make deliveries
+- Reviews to be extracted with a default maximum number
+- General Search - Added Search box that takes in all search types of Asins, Default Urls or Key Words.
+- Search Type - Select the kind of search being performed .i.e differentiate between `asins`, `keywords` and `default urls`
+- Modularization - Functionality is broken down to allow different modes to reuse code
+### Removed
+- Disjoint Searches - No more different search boxes for keywords, asins and default urls
+
+### Changed
+- Supported input - The search input has changed to support different formats for the asins and directurls
+
+
+``Asins``
+```
+"asins": [{
+      "asin":"B07JG7DS1T",
+      "countries":["de","it","es","uk","us","fr","in","ca"]
+}]
+```
+and
+```"B07P6Y8L3F","B07P6Y8L3F","B07JG7DS1T"```
+
+
+```Direct Urls```
+
+```
+[{
+    "url": "https://www.amazon.com/dp/B07P6Y8L3F",
+    "userData": {
+        "label": "detail",
+        "keyword": "B07P6Y8L3F",
+        "asin": "B07P6Y8L3F",
+        "detailUrl": "https://www.amazon.com/dp/B07P6Y8L3F",
+        "sellerUrl": "https://www.amazon.com/gp/offer-listing/B07P6Y8L3F"
+    }
+},{
+      "url": "https://www.amazon.com/dp/B07P6Y8L3F",
+      "userData": {
+          "label": "detail",
+          "keyword": "B07P6Y8L3F",
+          "asin": "B07P6Y8L3F",
+          "detailUrl": "https://www.amazon.com/dp/B07P6Y8L3F",
+          "sellerUrl": "https://www.amazon.com/gp/offer-listing/B07P6Y8L3F"
+      }
+  }]
+```
+and
+```
+"https://www.amazon.com/s?k=luna+sandals&ref=nb_sb_noss", "https://www.amazon.com/s?k=luna+sandals&ref=nb_sb_noss"
+```
+

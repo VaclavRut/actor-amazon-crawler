@@ -2,12 +2,9 @@
 const Apify = require('apify');
 const cheerio = require('cheerio');
 const createSearchUrls = require('./createSearchUrls');
-const parseSellerDetail = require('./parseSellerDetail');
-const { parseItemUrls } = require('./parseItemUrls');
-const parsePaginationUrl = require('./parsePaginationUrl');
-const { saveItem, getOriginUrl } = require('./utils');
-const detailParser = require('./parseItemDetail');
 const CloudFlareUnBlocker = require('./unblocker');
+const runCrawler = require('./runCrawler');
+const { updateCookies } = require('./updateCookies');
 
 const { log } = Apify.utils;
 // TODO: Add an option to limit number of results for each keyword
@@ -16,13 +13,33 @@ Apify.main(async () => {
     const requestQueue = await Apify.openRequestQueue();
     const input = await Apify.getValue('INPUT');
     const env = await Apify.getEnv();
+    const { scraper, reviews } = input;
+    let getReviews = false;
+    if (input.maxReviews && input.maxReviews > 0) {
+        getReviews = true;
+    }
+    let limitResults;
+    switch (input.searchType) {
+        case "keywords":
+            if (input.maxReviews || input.maxReviews > 10) {
+                limitResults = input.maxReviews > 10 ?
+                    (input.maxResults * (2 + input.maxReviews / 10)) + input.search.split(',').length :
+                    input.maxResults * 3 + input.search.split(',').length;
+            } else {
+                limitResults = input.maxResults * 2 + input.search.split(',').length;
+            }
+
+        default:
+            limitResults = input.maxResults > 10 ? input.maxResults * (2 + input.maxReviews / 10) : input.maxResults * 3;
+    }
     // based on the input country and keywords, generate the search urls
+    // console.log(limitResults);
     const urls = await createSearchUrls(input);
+
     for (const searchUrl of urls) {
         console.log(searchUrl.url);
         await requestQueue.addRequest(searchUrl);
     }
-
     const proxyConfiguration = { ...input.proxy };
     const cloudFlareUnBlocker = new CloudFlareUnBlocker({
         proxyConfiguration,
@@ -40,10 +57,28 @@ Apify.main(async () => {
             },
         },
         maxConcurrency: input.maxConcurrency || 5,
-        maxRequestsPerCrawl: input.maxRequestsPerCrawl || null,
+        maxRequestsPerCrawl: limitResults || null,
         handlePageTimeoutSecs: 2.5 * 60,
         persistCookiesPerSession: true,
         handleRequestFunction: async ({ request, session }) => {
+            // log.info(session.id);
+            if(input.delivery !== ''){
+	    let kukies = await Apify.getValue('puppeteerCookies');
+            if (!kukies) {
+                const puppeteerCookies = await updateCookies({domain: request.userData.domain, delivery: input.delivery});
+                kukies = puppeteerCookies;
+                await Apify.setValue('puppeteerCookies',puppeteerCookies);
+            }
+            const cookies = [];
+            kukies.forEach(kukie => {
+                if (kukie.name === "sp-cdn") {
+                    cookies.push({name: kukie.name, value: kukie.value});
+                }
+            });
+            session.setPuppeteerCookies(cookies, request.url);
+	    }
+            // console.log(kukies)
+            // log.info(session.getCookieString(request.url));
             const responseRequest = await cloudFlareUnBlocker.unblock({ request, session });
             const $ = cheerio.load(responseRequest.body);
             // to handle blocked requests
@@ -63,105 +98,86 @@ Apify.main(async () => {
                 throw new Error('Session blocked, retiring. If you see this for a LONG time, stop the run - you don\'t have any working proxy right now.'
                     + ' But by default this can happen for some time until we find working session.');
             }
-
-            const urlOrigin = await getOriginUrl(request);
-            // add pagination and items on the search
-            if (request.userData.label === 'page') {
-                // solve pagination if on the page, now support two layouts
-                const enqueuePagination = await parsePaginationUrl($, request);
-                if (enqueuePagination !== false) {
-                    log.info(`Adding new pagination of search ${enqueuePagination}`);
-                    await requestQueue.addRequest({
-                        url: enqueuePagination,
-                        userData: {
-                            label: 'page',
-                            keyword: request.userData.keyword,
-                        },
-                    });
-                }
-                // add items to the queue
-                try {
-                    const items = await parseItemUrls($, request);
-                    for (const item of items) {
-                        await requestQueue.addRequest({
-                            url: item.url,
-                            userData: {
-                                label: 'detail',
-                                keyword: request.userData.keyword,
-                                asin: item.asin,
-                                detailUrl: item.detailUrl,
-                                sellerUrl: item.sellerUrl,
-                            },
-                        }, { forefront: true });
-                    }
-
-                    if (items.length === 0) {
-                        await Apify.pushData({
-                            status: 'No items for this keyword.',
-                            url: request.url,
-                            keyword: request.userData.keyword,
-                        });
-                    }
-                } catch (error) {
-                    await Apify.pushData({
-                        status: 'No items for this keyword.',
-                        url: request.url,
-                        keyword: request.userData.keyword,
-                    });
-                }
-                // extract info about item and about seller offers
-            } else if (request.userData.label === 'detail') {
-                try {
-                    await detailParser($, request, requestQueue);
-                } catch (e) {
-                    log.error('Detail parsing failed', e);
-                }
-            } else if (request.userData.label === 'seller') {
-                try {
-                    const item = await parseSellerDetail($, request);
-                    if (item) {
-                        let paginationUrlSeller;
-                        const paginationEle = $('ul.a-pagination li.a-last a');
-                        if (paginationEle.length !== 0) {
-                            paginationUrlSeller = urlOrigin + paginationEle.attr('href');
-                        } else {
-                            paginationUrlSeller = false;
-                        }
-
-                        // if there is a pagination, go to another page
-                        if (paginationUrlSeller !== false) {
-                            log.info(`Seller detail has pagination, crawling that now -> ${paginationUrlSeller}`);
-                            await requestQueue.addRequest({
-                                url: paginationUrlSeller,
-                                userData: {
-                                    label: 'seller',
-                                    itemDetail: request.userData.itemDetail,
-                                    keyword: request.userData.keyword,
-                                    asin: request.userData.asin,
-                                    detailUrl: request.userData.detailUrl,
-                                    sellerUrl: request.userData.sellerUrl,
-                                    sellers: item.sellers,
-                                },
-                            }, { forefront: true });
-                        } else {
-                            log.info(`Saving item url: ${request.url}`);
-                            await saveItem('RESULT', request, item, input, env.defaultDatasetId, session);
-                        }
-                    }
-                } catch (error) {
-                    console.error(error);
-                    await saveItem('NORESULT', request, null, input, env.defaultDatasetId);
-                }
-            }
+            await runCrawler({$, session, request, requestQueue, input, getReviews, env});
         },
-
-        // If request failed 4 times then this function is executed.
         handleFailedRequestFunction: async ({ request }) => {
             log.info(`Request ${request.url} failed 4 times`);
             await Apify.setValue(`bug_${Math.random()}.html`, $('body').html(), { contentType: 'text/html' });
         },
     });
 
-    // Run crawler.
-    await crawler.run();
+    const pptr = new Apify.PuppeteerCrawler({
+        requestQueue,
+        launchPuppeteerOptions: {
+            headless: true,
+            slowMo: 100,
+        },
+        useSessionPool: true,
+        sessionPoolOptions: {
+            maxPoolSize: 30,
+            persistStateKeyValueStoreId: 'amazon-sessions',
+            sessionOptions: {
+                maxUsageCount: 50,
+            },
+        },
+        maxConcurrency: input.maxConcurrency || 5,
+        maxRequestsPerCrawl: limitResults || null,
+        handlePageTimeoutSecs: 2.5 * 60,
+        handleRequestTimeoutSecs: 60,
+        persistCookiesPerSession: true,
+        handlePageFunction: async ({ page, request, session }) => {
+            const { url, userData, userData: { label } } = request;
+            try {
+                await page.waitFor(3000);
+                await page.waitForSelector('#a-popover-root');
+            } catch (e) {
+                await page.waitFor(10000);
+                await page.waitForSelector('body')
+            }
+	    if(input.deliver !== ''){
+            const cookies = JSON.parse(JSON.stringify(session.cookieJar))["cookies"];
+            const cookie = cookies.find(x => x.key === 'sp-cdn');
+            const deliverCountry = input.delivery.split(',');
+            const code = deliverCountry[0];
+	    if(!cookie || cookie.value !== `"L5Z9:${code}"`) {
+                const deliveryCode = deliverCountry[1];
+                try{
+                    try {
+                        await page.waitForSelector('#nav-global-location-slot #glow-ingress-line2');
+                        await page.click('#nav-global-location-slot #glow-ingress-line2');
+                    } catch (e) {
+                        await page.click('#nav-global-location-slot #glow-ingress-line2');
+                    }
+
+                    try {
+                        await page.waitForSelector('.a-declarative > .a-dropdown-container > #GLUXCountryListDropdown > .a-button-inner > .a-button-text');
+                        await page.click('.a-declarative > .a-dropdown-container > #GLUXCountryListDropdown > .a-button-inner > .a-button-text');
+                    } catch (e) {
+                        await page.click('.a-declarative > .a-dropdown-container > #GLUXCountryListDropdown > .a-button-inner > .a-button-text');
+                    }
+                    try {
+                        await page.waitForSelector(`.a-popover-wrapper #${deliveryCode}`);
+                        await page.click(`.a-popover-wrapper #${deliveryCode}`);
+                    } catch (e) {
+                        await page.click(`.a-popover-wrapper #${deliveryCode}`);
+                    }
+                } catch (e) {
+                    // Cannot change location do nothing
+                }
+            }
+	    }
+            const pageHTML = await page.evaluate(() => {
+                return document.body.outerHTML;
+            });
+            const $ = cheerio.load(pageHTML);
+            await runCrawler({$, session, request, requestQueue, input, getReviews, env});
+        },
+        handleFailedRequestFunction: async ({ page, request }) => {
+            log.info(`Request ${request.url} failed 4 times`);
+            const html = await page.evaluate(() => document.body.outerHTML);
+            const $ = cheerio.load(html);
+            await Apify.setValue(`bug_${Math.random()}.html`, $('body').html(), { contentType: 'text/html' });
+        },
+    })
+    scraper === true ? await pptr.run() : await crawler.run();
 });

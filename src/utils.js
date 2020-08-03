@@ -88,6 +88,8 @@ function getCurrency(request) {
             return 'EUR';
         case 'www.amazon.co.jp':
             return 'JPY';
+        case 'www.amazon.ae':
+            return 'AED';
     }
 }
 
