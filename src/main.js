@@ -19,18 +19,22 @@ Apify.main(async () => {
         getReviews = true;
     }
     let limitResults;
-    switch (input.searchType) {
-        case "keywords":
-            if (input.maxReviews || input.maxReviews > 10) {
-                limitResults = input.maxReviews > 10 ?
-                    (input.maxResults * (2 + input.maxReviews / 10)) + input.search.split(',').length :
-                    input.maxResults * 3 + input.search.split(',').length;
-            } else {
-                limitResults = input.maxResults * 2 + input.search.split(',').length;
-            }
+    try{
+        switch (input.searchType) {
+            case "keywords":
+                if (input.maxReviews || input.maxReviews > 10) {
+                    limitResults = input.maxReviews > 10 ?
+                        (input.maxResults * (2 + input.maxReviews / 10)) + input.search.split(',').length :
+                        input.maxResults * 3 + input.search.split(',').length;
+                } else {
+                    limitResults = input.maxResults * 2 + input.search.split(',').length;
+                }
 
-        default:
-            limitResults = input.maxResults > 10 ? input.maxResults * (2 + input.maxReviews / 10) : input.maxResults * 3;
+            default:
+                limitResults = input.maxResults > 10 ? input.maxResults * (2 + input.maxReviews / 10) : input.maxResults * 3;
+        }
+    } catch (e) {
+        limitResults = input.maxResults * 3
     }
     // based on the input country and keywords, generate the search urls
     // console.log(limitResults);
@@ -63,20 +67,20 @@ Apify.main(async () => {
         handleRequestFunction: async ({ request, session }) => {
             // log.info(session.id);
             if(input.delivery !== ''){
-	    let kukies = await Apify.getValue('puppeteerCookies');
-            if (!kukies) {
-                const puppeteerCookies = await updateCookies({domain: request.userData.domain, delivery: input.delivery});
-                kukies = puppeteerCookies;
-                await Apify.setValue('puppeteerCookies',puppeteerCookies);
-            }
-            const cookies = [];
-            kukies.forEach(kukie => {
-                if (kukie.name === "sp-cdn") {
-                    cookies.push({name: kukie.name, value: kukie.value});
+                let kukies = await Apify.getValue('puppeteerCookies');
+                if (!kukies) {
+                    const puppeteerCookies = await updateCookies({domain: request.userData.domain, delivery: input.delivery});
+                    kukies = puppeteerCookies;
+                    await Apify.setValue('puppeteerCookies',puppeteerCookies);
                 }
-            });
-            session.setPuppeteerCookies(cookies, request.url);
-	    }
+                const cookies = [];
+                kukies.forEach(kukie => {
+                    if (kukie.name === "sp-cdn") {
+                        cookies.push({name: kukie.name, value: kukie.value});
+                    }
+                });
+                session.setPuppeteerCookies(cookies, request.url);
+            }
             // console.log(kukies)
             // log.info(session.getCookieString(request.url));
             const responseRequest = await cloudFlareUnBlocker.unblock({ request, session });
@@ -134,38 +138,38 @@ Apify.main(async () => {
                 await page.waitFor(10000);
                 await page.waitForSelector('body')
             }
-	    if(input.deliver !== ''){
-            const cookies = JSON.parse(JSON.stringify(session.cookieJar))["cookies"];
-            const cookie = cookies.find(x => x.key === 'sp-cdn');
-            const deliverCountry = input.delivery.split(',');
-            const code = deliverCountry[0];
-	    if(!cookie || cookie.value !== `"L5Z9:${code}"`) {
-                const deliveryCode = deliverCountry[1];
-                try{
-                    try {
-                        await page.waitForSelector('#nav-global-location-slot #glow-ingress-line2');
-                        await page.click('#nav-global-location-slot #glow-ingress-line2');
-                    } catch (e) {
-                        await page.click('#nav-global-location-slot #glow-ingress-line2');
-                    }
+            if(input.deliver !== ''){
+                const cookies = JSON.parse(JSON.stringify(session.cookieJar))["cookies"];
+                const cookie = cookies.find(x => x.key === 'sp-cdn');
+                const deliverCountry = input.delivery.split(',');
+                const code = deliverCountry[0];
+                if(!cookie || cookie.value !== `"L5Z9:${code}"`) {
+                    const deliveryCode = deliverCountry[1];
+                    try{
+                        try {
+                            await page.waitForSelector('#nav-global-location-slot #glow-ingress-line2');
+                            await page.click('#nav-global-location-slot #glow-ingress-line2');
+                        } catch (e) {
+                            await page.click('#nav-global-location-slot #glow-ingress-line2');
+                        }
 
-                    try {
-                        await page.waitForSelector('.a-declarative > .a-dropdown-container > #GLUXCountryListDropdown > .a-button-inner > .a-button-text');
-                        await page.click('.a-declarative > .a-dropdown-container > #GLUXCountryListDropdown > .a-button-inner > .a-button-text');
+                        try {
+                            await page.waitForSelector('.a-declarative > .a-dropdown-container > #GLUXCountryListDropdown > .a-button-inner > .a-button-text');
+                            await page.click('.a-declarative > .a-dropdown-container > #GLUXCountryListDropdown > .a-button-inner > .a-button-text');
+                        } catch (e) {
+                            await page.click('.a-declarative > .a-dropdown-container > #GLUXCountryListDropdown > .a-button-inner > .a-button-text');
+                        }
+                        try {
+                            await page.waitForSelector(`.a-popover-wrapper #${deliveryCode}`);
+                            await page.click(`.a-popover-wrapper #${deliveryCode}`);
+                        } catch (e) {
+                            await page.click(`.a-popover-wrapper #${deliveryCode}`);
+                        }
                     } catch (e) {
-                        await page.click('.a-declarative > .a-dropdown-container > #GLUXCountryListDropdown > .a-button-inner > .a-button-text');
+                        // Cannot change location do nothing
                     }
-                    try {
-                        await page.waitForSelector(`.a-popover-wrapper #${deliveryCode}`);
-                        await page.click(`.a-popover-wrapper #${deliveryCode}`);
-                    } catch (e) {
-                        await page.click(`.a-popover-wrapper #${deliveryCode}`);
-                    }
-                } catch (e) {
-                    // Cannot change location do nothing
                 }
             }
-	    }
             const pageHTML = await page.evaluate(() => {
                 return document.body.outerHTML;
             });
