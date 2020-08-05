@@ -40,7 +40,6 @@ async function createSearchUrls(input) {
     if (input.searchType === 'asins') {
         try {
             try {
-                console.log(typeof JSON.parse(input.search))
                 for (const item of JSON.parse(input.search)) {
                     for (const country of item.countries) {
                         searchUrlBase = getBaseUrl(country.toUpperCase());

@@ -6,7 +6,7 @@
     "scraper":{
 	    "title": "Use Browser",
 	    "type": "boolean",
-	    "description": "Determine kind of browser to use",
+	    "description": "Keep checked in order to use a real browser in evaluating amazon",
 	    "editor": "checkbox",
 	    "default": true
     },
@@ -25,9 +25,11 @@
         "IT",
         "IN",
         "CA",
-        "JP"
+        "JP",
+        "AE"
       ],
-      "enumTitles": ["amazon.com",
+      "enumTitles": [
+        "amazon.com",
         "amazon.co.uk",
         "amazon.de",
         "amazon.es",
@@ -35,7 +37,9 @@
         "amazon.it",
         "amazon.in",
         "amazon.ca",
-        "amazon.co.jp"]
+        "amazon.co.jp",
+        "amazon.ae"
+      ]
     },
     "category": {
           "title": "Store Department",
@@ -106,7 +110,7 @@
       },
     "searchType": {"title": "Select the type of search you would like",
           "type": "string",
-          "description": "Select your Amazon domain",
+          "description": "Select the type of search to perform from a choice of keywords, asins or direct Urls",
           "editor": "select",
           "default": "keywords",
           "enum": ["keywords", "asins", "directUrls"],
@@ -123,7 +127,7 @@
       "title": "Number of results",
       "type": "integer",
       "description": "Number of results you would like to save in total.",
-      "default": 20,
+      "prefill": 20,
       "editor": "number"
     },
     "proxy": {
@@ -137,13 +141,13 @@
           "title": "Number of reviews",
           "type": "integer",
           "description": "Number of reviews you would like to save per product.",
-          "default": 0,
+          "prefill": 0,
           "editor": "number"
       },
     "delivery": {
           "title": "Delivery Location",
           "type": "string",
-          "description": "Select your Amazon domain",
+          "description": "Select the location you would like the product to be delivered to",
           "editor": "select",
           "default": "",
           "enum": [

@@ -13,31 +13,31 @@ Apify.main(async () => {
     const requestQueue = await Apify.openRequestQueue();
     const input = await Apify.getValue('INPUT');
     const env = await Apify.getEnv();
-    const { scraper, reviews } = input;
+    const { scraper, maxResults, maxReviews } = input;
     let getReviews = false;
-    if (input.maxReviews && input.maxReviews > 0) {
+    if (maxReviews && maxReviews > 0) {
         getReviews = true;
     }
     let limitResults;
     try{
         switch (input.searchType) {
             case "keywords":
-                if (input.maxReviews || input.maxReviews > 10) {
-                    limitResults = input.maxReviews > 10 ?
-                        (input.maxResults * (2 + input.maxReviews / 10)) + input.search.split(',').length :
-                        input.maxResults * 3 + input.search.split(',').length;
+                if (maxReviews || maxReviews > 10) {
+                    limitResults = maxReviews > 10 ?
+                        (maxResults * (2 + maxReviews / 10)) + input.search.split(',').length :
+                        maxResults * 3 + input.search.split(',').length;
                 } else {
-                    limitResults = input.maxResults * 2 + input.search.split(',').length;
+                    limitResults = maxResults * 2 + input.search.split(',').length;
                 }
 
             default:
-                limitResults = input.maxResults > 10 ? input.maxResults * (2 + input.maxReviews / 10) : input.maxResults * 3;
+                limitResults = maxReviews > 10 ? maxResults * (2 + maxReviews / 10) : maxResults === 0 ?
+                    maxResults : maxResults * 3;
+
         }
     } catch (e) {
-        limitResults = input.maxResults * 3
+        limitResults = maxResults === 0 ? maxResults : maxResults * 3;
     }
-    // based on the input country and keywords, generate the search urls
-    // console.log(limitResults);
     const urls = await createSearchUrls(input);
 
     for (const searchUrl of urls) {
@@ -114,7 +114,7 @@ Apify.main(async () => {
         requestQueue,
         launchPuppeteerOptions: {
             headless: true,
-            slowMo: 100,
+            slowMo: Apify.isAtHome() ? 100 : undefined,
         },
         useSessionPool: true,
         sessionPoolOptions: {
