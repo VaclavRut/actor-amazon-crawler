@@ -127,7 +127,7 @@
       "title": "Number of results",
       "type": "integer",
       "description": "Number of results you would like to save in total.",
-      "prefill": 20,
+      "default": 0,
       "editor": "number"
     },
     "proxy": {
@@ -141,7 +141,7 @@
           "title": "Number of reviews",
           "type": "integer",
           "description": "Number of reviews you would like to save per product.",
-          "prefill": 0,
+          "default": 0,
           "editor": "number"
       },
     "delivery": {

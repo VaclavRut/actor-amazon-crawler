@@ -38,6 +38,7 @@ Apify.main(async () => {
     } catch (e) {
         limitResults = maxResults === 0 ? maxResults : maxResults * 3;
     }
+    limitResults = !maxResults ? null : limitResults; //handle undefined or null
     const urls = await createSearchUrls(input);
 
     for (const searchUrl of urls) {
