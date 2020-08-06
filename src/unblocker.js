@@ -12,6 +12,7 @@ class CloudFlareUnBlocker {
     constructor(options) {
         this.name = 'UNBLOCKER';
         this.detectChallengeFunction = options.detectChallengeFunction || this._defaultDetectChallengeFunction;
+        this.getDeliveryCountryCookieRequest = options.getDeliveryCountryCookieRequest || this._getDeliveryCountryCookieRequest;
         this.poroxyConfiguration = options.poroxyConfiguration;
         this.apifyProxyGroups = options.proxyConfiguration.apifyProxyGroups;
         this.detectChallengeRequestFunction = options.detectChallengeRequestFunction || this._defaultDetectChallengeRequestFunction;
@@ -43,7 +44,7 @@ class CloudFlareUnBlocker {
 
         const proxyUrl = this._getProxyUrl(session);
         // this._log(proxyUrl);
-        const cookieString = session.getCookieString(request.url);
+        const cookieString = session.getCookieString(request.url) ;
 
         const requestOptions = {
             headers: this._getBrowserHeaders(cookieString),
@@ -231,6 +232,20 @@ class CloudFlareUnBlocker {
         await this.waitUntilChallengeFinishedFunction({ page, request });
         this.puppeteerPool.recyclePage(page).catch();
         return authRequest;
+    }
+
+    /**
+     * Opens new page, sets up delivery country and returns the request details
+     * @param response
+     * @param request - Puppeteer request object
+     * @return {Promise<Object>} - Auth request
+     * @private
+     */
+    async _getDeliveryCountryCookieRequest({request, session}) {
+        const page = await this.puppeteerPool.newPage();
+        const cookies = await page.cookieJar();
+        console.log(cookies)
+        console.log(session)
     }
 
     /**

@@ -15,12 +15,14 @@ async function extractItemDetails($, request) {
             const asin = $(this).attr('data-asin');
             const sellerUrl = `${originUrl}/gp/offer-listing/${asin}`;
             const itemUrl = `${originUrl}/dp/${asin}`;
+            const reviewsUrl = `${originUrl}/product-reviews/${asin}`;
             if (asin) {
                 itemUrls.push({
                     url: itemUrl,
                     asin,
                     detailUrl: itemUrl,
                     sellerUrl,
+                    reviewsUrl
                 });
             }
         });

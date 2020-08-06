@@ -2,18 +2,22 @@ const Apify = require('apify');
 
 const { log } = Apify.utils;
 
-async function parseItemDetail($, request, requestQueue) {
-    const { sellerUrl, asin, detailUrl } = request.userData;
+async function parseItemDetail($, request, requestQueue, getReviews) {
+    const { sellerUrl, asin, detailUrl, reviewsUrl, delivery } = request.userData;
     const item = {};
     const reviewsConunt = $('#acrCustomerReviewText').length !== 0 ? $('#acrCustomerReviewText').eq(0).text() : null;
     const stars = $('.reviewCountTextLinkedHistogram').length !== 0 ? $('.reviewCountTextLinkedHistogram').attr('title').match(/(\d+\.\d+)|\d+/)[0] : null;
     const details = {};
+    const breadCrumbs = $('#wayfinding-breadcrumbs_feature_div').text().trim().split('\n')
+        .filter(el => el.trim() != '')
+        .map(el => el.trim()).join('')
     $('table.prodDetTable tr').each(function () {
         if ($(this).find('th').text().trim() !== '') {
             details[$(this).find('th').text().trim()] = $(this).find('td').text().trim();
         }
     });
 
+    // console.log($('#nav-global-location-slot').text().trim());
     if ($('.DElocale table').length !== 0) {
         $('.DElocale table tr').each(function () {
             if ($(this).find('td').eq(0).text()
@@ -24,9 +28,15 @@ async function parseItemDetail($, request, requestQueue) {
             }
         });
     }
-
+    // if (getReviews) {
+    //     item.reviews = await parseItemReviews($, request, requestQueue);
+    // }
+    item.InStock = $('#availability') ? true: false;
+    item.delivery = $('#delivery-message').text().trim();
     item.featureDesc = $('#featurebullets_feature_div').length !== 0 ? $('#featurebullets_feature_div').text().trim() : null;
     item.desc = $('#productDescription').length !== 0 ? $('#productDescription').text().trim() : null;
+    item.breadCrumbs = breadCrumbs;
+    item.NumberOfQuestions = $('#askATFLink').text().trim().match(/\d+/) ? parseInt($('#askATFLink').text().trim().match(/\d+/).shift()) : 0;
     item.reviewsCount = reviewsConunt;
     item.stars = stars;
     item.details = details;
@@ -49,17 +59,29 @@ async function parseItemDetail($, request, requestQueue) {
             }
         }
     }
-
-    await requestQueue.addRequest({
-        url: sellerUrl,
-        userData: {
-            asin,
-            detailUrl,
-            sellerUrl,
-            itemDetail: item,
-            label: 'seller',
-        },
-    }, { forefront: true });
+    if (getReviews) {
+        await requestQueue.addRequest({
+            url: reviewsUrl,
+            userData: {
+                asin,
+                detailUrl,
+                sellerUrl,
+                itemDetail: item,
+                label: 'reviews',
+            },
+        }, { forefront: true });
+    } else {
+        await requestQueue.addRequest({
+            url: sellerUrl,
+            userData: {
+                asin,
+                detailUrl,
+                sellerUrl,
+                itemDetail: item,
+                label: 'seller',
+            },
+        }, { forefront: true });
+    }
 }
 
 module.exports = parseItemDetail;
