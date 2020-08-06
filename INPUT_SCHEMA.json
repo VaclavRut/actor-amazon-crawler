@@ -127,7 +127,6 @@
       "title": "Number of results",
       "type": "integer",
       "description": "Number of results you would like to save in total.",
-      "default": 0,
       "editor": "number"
     },
     "proxy": {
