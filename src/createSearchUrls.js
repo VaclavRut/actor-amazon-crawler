@@ -18,13 +18,13 @@ function getBaseUrl(country) {
         CA: 'https://www.amazon.ca/',
         JP: 'https://www.amazon.co.jp/',
         AE: 'https://www.amazon.ae/',
-        SA: 'https://www.amazon.sa',
-        BR: 'https://www.amazon.com.br',
-        MX: 'https://www.amazon.com.mx',
-        SG: 'https://www.amazon.sg',
-        TR: 'https://www.amazon.com.tr',
-        NL: 'https://www.amazon.nl',
-        AU: 'https://www.amazon.com.au',
+        SA: 'https://www.amazon.sa/',
+        BR: 'https://www.amazon.com.br/',
+        MX: 'https://www.amazon.com.mx/',
+        SG: 'https://www.amazon.sg/',
+        TR: 'https://www.amazon.com.tr/',
+        NL: 'https://www.amazon.nl/',
+        AU: 'https://www.amazon.com.au/',
     };
     const url = baseUrls[country];
     if (!url) throw new Error('Selected country is not supported, contact us.');
