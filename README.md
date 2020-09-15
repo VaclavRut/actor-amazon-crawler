@@ -3,24 +3,16 @@
 This configuration will extract items for a keywords that you will specify in the input, and it will automatically extract all pages for the given keyword.
 You can specify more keywords on the input for one run. Also, there are more modes for the configuration to run, so check the description below.
 
-Also, you can specify on the input, which country you would like to extract the items.
-Now we support these countries:
-* US - https://www.amazon.com
-* GB - https://www.amazon.co.uk
-* DE - https://www.amazon.de
-* ES - https://www.amazon.es
-* FR - https://www.amazon.fr
-* IT - https://www.amazon.it
-* IN - https://www.amazon.in
-* CA - https://www.amazon.ca
-* JP - https://www.amazon.co.jp
-* AE - https://www.amazon.ae
-
-If you want to add another country, contact us.
-
 Configuration then extracts all seller offers for a given keyword, so if there is pagination on the seller offers page, you get all offers!
 
-## Sample result
+- [Sample result](#sample-result)
+- [Proxy](#proxy)
+- [Asin crawling](#asin-crawling)
+- [Direct urls crawling](#direct-urls-crawling)
+- [Compute units consumption](#compute-units-consumption)
+- [Changelog](#changelog)
+
+### Sample result
 ```
 {
   "title": "Samsung SE450 Series 27 inch FHD 1920x1080 Desktop Monitor for Business, DVI, VGA, DisplayPort, VESA mountable, 3-Year Warranty, TAA (S27E450D)",
@@ -44,56 +36,6 @@ Configuration then extracts all seller offers for a given keyword, so if there i
       "prime": true,
       "shippingInfo": "",
       "shopUrl": "www.amazon.com/gp/aag/main/ref=olp_merch_name_2/?seller=A42717TRWCXE4",
-      "pricePerUnit": null
-    },
-    {
-      "price": "$209.00",
-      "priceParsed": 209,
-      "condition": "New",
-      "sellerName": "Amazon.com",
-      "prime": true,
-      "shippingInfo": "",
-      "shopUrl": "www.amazon.com",
-      "pricePerUnit": null
-    },
-    {
-      "price": "$257.63",
-      "priceParsed": 257.63,
-      "condition": "New",
-      "sellerName": "Triplenet Pricing INC",
-      "prime": false,
-      "shippingInfo": "",
-      "shopUrl": "www.amazon.com/gp/aag/main/ref=olp_merch_name_4/?seller=AAZRLVTNON75Z",
-      "pricePerUnit": null
-    },
-    {
-      "price": "$249.00",
-      "priceParsed": 249,
-      "condition": "New",
-      "sellerName": "Aventis Systems",
-      "prime": false,
-      "shippingInfo": "",
-      "shopUrl": "www.amazon.com/gp/aag/main/ref=olp_merch_name_5/?seller=A1PUHO6D4MM5FC",
-      "pricePerUnit": null
-    },
-    {
-      "price": "$253.73",
-      "priceParsed": 253.73,
-      "condition": "New",
-      "sellerName": "Hot Deals 4 Less®",
-      "prime": false,
-      "shippingInfo": "",
-      "shopUrl": "www.amazon.com/gp/aag/main/ref=olp_merch_name_6/?seller=A1YAK8U7QV5H1E",
-      "pricePerUnit": null
-    },
-    {
-      "price": "$217.81",
-      "priceParsed": 217.81,
-      "condition": "New",
-      "sellerName": "OneDealOutlet Online",
-      "prime": false,
-      "shippingInfo": "",
-      "shopUrl": "www.amazon.com/gp/aag/main/ref=olp_merch_name_7/?seller=A4UCFL9LU89NR",
       "pricePerUnit": null
     }
   ],
@@ -156,72 +98,12 @@ Configuration then extracts all seller offers for a given keyword, so if there i
         "reviewTitle": "Amazon search sucks",
         "reviewedIn": "Reviewed in the United States on May 17, 2020",
         "reviewDescription": "Monitor is fine.  Problem is that when you search Amazon for \"monitor with speakers\", it should be able to show only those.  This monitor DOES NOT have speakers!  Totally frustrating!!!"
-      },
-      {
-        "userName": "Olga Bezgodov",
-        "reviewTitle": "No vga plug",
-        "reviewedIn": "Reviewed in the United States on January 22, 2020",
-        "reviewDescription": "Don’t buy! Doesn’t have a vga plug and no controller and no headphones audio"
-      },
-      {
-        "userName": "Ken Necochea Jr",
-        "reviewTitle": "I had one already and I loved the resolution that I replaced the other dual monitor ...",
-        "reviewedIn": "Reviewed in the United States on January 10, 2018",
-        "reviewDescription": "Quality monitor 9.5 on a scale of 10, and I got it for a smokin' price.  I had one already and I loved the resolution that I replaced the other dual monitor with a twin..."
-      },
-      {
-        "userName": "SMoreHouse",
-        "reviewTitle": "It's Fine",
-        "reviewedIn": "Reviewed in the United States on April 26, 2020",
-        "reviewDescription": "It's fine for my work laptop that happens to have a display port connection but there's no HDMI for any other computer in my house."
-      },
-      {
-        "userName": "Dena",
-        "reviewTitle": "Great",
-        "reviewedIn": "Reviewed in the United States on November 16, 2018",
-        "reviewDescription": "Just what we wanted"
-      },
-      {
-        "userName": "Steve L",
-        "reviewTitle": "Not as described",
-        "reviewedIn": "Reviewed in the United States on April 29, 2020",
-        "reviewDescription": "The picture shows that it has a HDMI port.  The actual unit does not have this, and now I have to buy a $30 adapter.  Amazon- please credit me the cost of the adapter."
-      },
-      {
-        "userName": "Gron",
-        "reviewTitle": "Monitor  was as advertised adver",
-        "reviewedIn": "Reviewed in the United States on March 29, 2020",
-        "reviewDescription": "Monitor  was as advertised adver"
-      },
-      {
-        "userName": "HY",
-        "reviewTitle": "Five Stars",
-        "reviewedIn": "Reviewed in the United States on January 29, 2018",
-        "reviewDescription": "Great monitor at a good price."
-      },
-      {
-        "userName": "Robert B.",
-        "reviewTitle": "Shipped on time and in good condition. It's an upgrade from a 22\" Samsung ...",
-        "reviewedIn": "Reviewed in the United States on October 4, 2016",
-        "reviewDescription": "Shipped on time and in good condition. It's an upgrade from a 22\" Samsung monitor. It is clear, sharp, and the color is good. Had to turn down the brightness which was all the way up when it arrived. The controls are easily accessible and simple to operate. I'd recommend it to anyone."
-      },
-      {
-        "userName": "David Burg",
-        "reviewTitle": "Cheaply built, poor viewing angle, low picture quality",
-        "reviewedIn": "Reviewed in the United States on July 17, 2019",
-        "reviewDescription": "It's a big screen for not much money. But it's cheaply built - the plastic moves and makes cracking sound when you grab the monitor to move it. It has a thick border when many modern monitor feature edge-less build.The viewing angle, especially in portrait orientation is horrid - moving your head a few inches left or right and the color / contrast very visibly changes.I recommend you to get something else than this monitor."
-      },
-      {
-        "userName": "Dr. Aninda Shome",
-        "reviewTitle": "poor resolution, not meant for photographs",
-        "reviewedIn": "Reviewed in the United States on October 10, 2018",
-        "reviewDescription": "low quality resolutionphotos do not show very wellok for regular word and xlscan be used in portrait mode"
       }
     ]
   }
 }
 ```
-## Proxy
+### Proxy
 For proper function of the actor are proxies required, it is not recommended to run it on a free account for more than sample of results.
 If you plan to run it for more then couple results, subscribe to Apify platform to have access to large pool of proxies.
 
@@ -265,65 +147,32 @@ Here is a sample object to get seller info:
 ### Additional options
 maxResults - If you want to limit number of results to extract, set this value with number of results, otherwise keep it blank or 0. It doesn't work 100% precisely, that if you put there 5 results, it will create more of the records because of the concurrency.
 
-### Consumption
+### Compute units consumption
 Using Raw requests - 0.0884 CU when extracting 20 results from keyword search
 Using a Browser - 0.6025 CU when extracting 20 results from keyword search
 
+### Supported countries
+Also, you can specify on the input, which country you would like to extract the items.Now we support these countries:
+* US - https://www.amazon.com
+* GB - https://www.amazon.co.uk
+* DE - https://www.amazon.de
+* ES - https://www.amazon.es
+* FR - https://www.amazon.fr
+* IT - https://www.amazon.it
+* IN - https://www.amazon.in
+* CA - https://www.amazon.ca
+* JP - https://www.amazon.co.jp
+* AE - https://www.amazon.ae
+* SA - https://www.amazon.sa
+* BR - https://www.amazon.com.br
+* MX - https://www.amazon.com.mx
+* SG - https://www.amazon.sg
+* TR - https://www.amazon.com.tr
+* NL - https://www.amazon.nl
+* AU - https://www.amazon.com.au
 
-## Changelog
-Changes related to the new version
-
-### Added
-- Scraper Type - Type of scraper that can be used to evaluate amazon `Basic Crawler` and a default of `Puppeteer`.
-- Country - Added a new country domain `UAE`.
-- Delivery Location - Spinner to pick location where make deliveries
-- Reviews to be extracted with a default maximum number
-- General Search - Added Search box that takes in all search types of Asins, Default Urls or Key Words.
-- Search Type - Select the kind of search being performed .i.e differentiate between `asins`, `keywords` and `default urls`
-- Modularization - Functionality is broken down to allow different modes to reuse code
-### Removed
-- Disjoint Searches - No more different search boxes for keywords, asins and default urls
-
-### Changed
-- Supported input - The search input has changed to support different formats for the asins and directurls
-
-
-``Asins``
-```
-"asins": [{
-      "asin":"B07JG7DS1T",
-      "countries":["de","it","es","uk","us","fr","in","ca"]
-}]
-```
-and
-```"B07P6Y8L3F","B07P6Y8L3F","B07JG7DS1T"```
+If you want to add another country, contact us.
 
 
-```Direct Urls```
-
-```
-[{
-    "url": "https://www.amazon.com/dp/B07P6Y8L3F",
-    "userData": {
-        "label": "detail",
-        "keyword": "B07P6Y8L3F",
-        "asin": "B07P6Y8L3F",
-        "detailUrl": "https://www.amazon.com/dp/B07P6Y8L3F",
-        "sellerUrl": "https://www.amazon.com/gp/offer-listing/B07P6Y8L3F"
-    }
-},{
-      "url": "https://www.amazon.com/dp/B07P6Y8L3F",
-      "userData": {
-          "label": "detail",
-          "keyword": "B07P6Y8L3F",
-          "asin": "B07P6Y8L3F",
-          "detailUrl": "https://www.amazon.com/dp/B07P6Y8L3F",
-          "sellerUrl": "https://www.amazon.com/gp/offer-listing/B07P6Y8L3F"
-      }
-  }]
-```
-and
-```
-"https://www.amazon.com/s?k=luna+sandals&ref=nb_sb_noss", "https://www.amazon.com/s?k=luna+sandals&ref=nb_sb_noss"
-```
-
+### Changelog
+Changes related to the new versions are listed in the [CHANGELOG file](/CHANGELOG.md).

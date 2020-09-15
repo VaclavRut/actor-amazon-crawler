@@ -26,7 +26,14 @@
         "IN",
         "CA",
         "JP",
-        "AE"
+        "AE",
+        "SA",
+        "BR",
+        "MX",
+        "SG",
+        "TR",
+        "NL",
+        "AU"
       ],
       "enumTitles": [
         "amazon.com",
@@ -38,7 +45,14 @@
         "amazon.in",
         "amazon.ca",
         "amazon.co.jp",
-        "amazon.ae"
+        "amazon.ae",
+        "amazon.sa",
+        "amazon.com.br",
+        "amazon.com.mx",
+        "amazon.sg",
+        "amazon.com.tr",
+        "amazon.nl",
+        "amazon.com.au"
       ]
     },
     "category": {
