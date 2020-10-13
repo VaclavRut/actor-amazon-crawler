@@ -12,6 +12,8 @@ Configuration then extracts all seller offers for a given keyword, so if there i
 - [Compute units consumption](#compute-units-consumption)
 - [Changelog](#changelog)
 
+Find more information about business benefits and possible usage of the scraped data in [YouTube Video](https://www.youtube.com/watch?v=BsidLZKdYWQ).
+
 ### Sample result
 ```
 {
