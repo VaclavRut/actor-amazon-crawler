@@ -173,6 +173,7 @@ You can specify the country where you want to scrape items. We currently support
 * TR - https://www.amazon.com.tr
 * NL - https://www.amazon.nl
 * AU - https://www.amazon.com.au
+* SE - https://www.amazon.se
 
 If you want us to add another country, please email [support@apify.com](mailto:support@apify.com)
 

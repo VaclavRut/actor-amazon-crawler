@@ -25,6 +25,7 @@ function getBaseUrl(country) {
         TR: 'https://www.amazon.com.tr/',
         NL: 'https://www.amazon.nl/',
         AU: 'https://www.amazon.com.au/',
+        SE: 'https://www.amazon.se/',
     };
     const url = baseUrls[country];
     if (!url) throw new Error('Selected country is not supported, contact us.');

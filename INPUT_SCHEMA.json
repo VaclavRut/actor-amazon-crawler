@@ -33,7 +33,8 @@
         "SG",
         "TR",
         "NL",
-        "AU"
+        "AU",
+        "SE"
       ],
       "enumTitles": [
         "amazon.com",
@@ -52,7 +53,8 @@
         "amazon.sg",
         "amazon.com.tr",
         "amazon.nl",
-        "amazon.com.au"
+        "amazon.com.au",
+        "amazon.se"
       ]
     },
     "category": {
