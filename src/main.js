@@ -5,6 +5,7 @@ const createSearchUrls = require('./createSearchUrls');
 const CloudFlareUnBlocker = require('./unblocker');
 const runCrawler = require('./runCrawler');
 const { updateCookies } = require('./updateCookies');
+const { sleep } = Apify.utils;
 
 const { log } = Apify.utils;
 // TODO: Add an option to limit number of results for each keyword
@@ -133,10 +134,10 @@ Apify.main(async () => {
         handlePageFunction: async ({ page, request, session }) => {
             const { url, userData, userData: { label } } = request;
             try {
-                await page.waitFor(3000);
+                await sleep(3000);
                 await page.waitForSelector('#a-popover-root');
             } catch (e) {
-                await page.waitFor(10000);
+                await sleep(10000);
                 await page.waitForSelector('body')
             }
             if(input.deliver !== ''){
